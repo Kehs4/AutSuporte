@@ -1,7 +1,6 @@
 import {React, useState} from 'react';
-import AppRoutes from '../routes';
 import { Link } from 'react-router';
-import './home.css';
+import '../header.css';
 
 function Home() {
  
@@ -14,7 +13,7 @@ return <>
             </div>
 
             <nav className='autsuporte-options'>
-                <Link to="/home">Contact</Link>
+                <Link to="/login">Login</Link>
             </nav>
         </div>  
     </>
