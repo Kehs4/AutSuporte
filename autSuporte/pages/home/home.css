@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.autsuporte-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #030c30;
+    height: 100px;
+    color: white;
+}
+
+.autsuporte-header {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.autsuporte-options {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    margin-right: 15px;
+}
