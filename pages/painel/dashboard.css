@@ -5,6 +5,14 @@
   font-family: 'Poppins', sans-serif;
 }
 
+:root {
+  --primary-color: #ff9900;
+  --secondary-color: rgb(255, 166, 0);
+  --text-color: #303030;
+  --background-color: #f1f6fd;
+  --fade-color: rgba(255, 194, 82, 0.8);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -13,24 +21,43 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   background-color: #5f5f5f;
   height: 100px;
   color: white;
 }
 
-.autsuporte-header-dashboard {
+.autsuporte-header {
   display: flex;
   align-items: center;
-  text-align: start;
+}
+
+.autsuporte-header-title {
+  display: flex;
   background-color: #5f5f5f;
   color: white;
   font-size: 1.2rem;
-  margin-right: 70%;
 }
 
-.autsuporte-options-dashboard {
+.autsuporte-header-options {
   display: flex;
+  align-items: center;
+  justify-content: end;
   gap: 25px;
+  color: white;
+  margin-right: 20px;
+  font-size: 14px;
+  background-color: var(--primary-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+.autsuporte-header-options:hover {
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s ease;
 }
 
 .menu-keyflix {
@@ -39,7 +66,7 @@ html {
   max-width: 280px;
   overflow: hidden;
   transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-  background: linear-gradient(180deg, #F1F6FD 70%, #7FAFE8 100%);
+  background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   border-right: 1px solid #ccc;
   position: relative;
@@ -116,6 +143,7 @@ html {
 .menu-options-cart,
 .menu-options-support {
   display: flex;
+  align-items: center;
   margin: 10px;
   font-weight: 300;
   color: #525252;
@@ -133,7 +161,7 @@ html {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #F1F6FD 70%, #7FAFE8 100%);
+  background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
   flex: 1;
   transition: margin-left 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   margin-left: 0;
@@ -141,7 +169,7 @@ html {
 
 .dashboard-container.menu-open {
   transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-  background: linear-gradient(180deg, #F1F6FD 70%, #7FAFE8 100%);
+  background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   border-right: 1px solid #ccc;
   visibility: visible;
@@ -151,8 +179,9 @@ html {
 .dashboard-header {
   align-items: center;
   justify-content: space-between;
-  padding: 60px;
+  padding: 40px;
   background: #ffffff;
+  border-bottom: 1px solid #cccccca1;
 }
 
 .dashboard-title {
@@ -174,6 +203,7 @@ html {
   align-items: start;
   justify-content: space-around;
   width: 100%;
+  margin-top: 20px;
 }
 
 
@@ -186,7 +216,7 @@ html {
   width: 300px;
   height: 350px;
   margin-top: 8px;
-  box-shadow: #0356bb 3px 5px 0px 0px;
+  box-shadow: var(--primary-color) 3px 5px 0px 0px;
   border-radius: 5px;
 }
 

@@ -1,3 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-style: 'Poppins', sans-serif;
+}
+
 .login-background {
     position: fixed;
     top: 0;
@@ -44,9 +51,10 @@
 }
 
 .box-login label {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 5px;
     color: #000000;
+    font-weight: 300;
 }
 
 #username,

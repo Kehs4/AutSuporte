@@ -66,18 +66,23 @@ function Dashboard() {
       {({ isMenuOpen, menuSwitch }) => (
         <>
           <div className='autsuporte-container-dashboard'>
-            <button className='btn-menu' id='menu-switch' onClick={menuSwitch}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi list" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-              </svg>
-            </button>
-            
-            <h1 className='autsuporte-header-dashboard'>AutSuporte</h1>
-            
-              <nav className='autsuporte-options-dashboard'>
-                <Link to="/profile">Meu Perfil</Link>
-              </nav>
+
+            <div className='autsuporte-header'>
+              <button className='btn-menu' id='menu-switch' onClick={menuSwitch}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi list" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                </svg>
+              </button>
+
+              <h1 className='autsuporte-header-title'>AutSuporte</h1>
             </div>
+
+
+
+            <nav className='autsuporte-header-options'>
+              <Link to="/profile">Meu Perfil</Link>
+            </nav>
+          </div>
 
           <div className="dashboard-flex-wrapper">
             <div className={`menu-keyflix${isMenuOpen ? ' open' : ''}`} id='menu-keyflix'>
@@ -111,22 +116,25 @@ function Dashboard() {
               <div className='menu-options-box'>
 
                 <div className='menu-options-dashboard'>
-                  <img src="/public/home.svg" alt="" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                  </svg>
                   <Link to="/dashboard"><p>Dashboard</p></Link>
                 </div>
                 <div className='menu-options-user'>
-                  <img src="/public/user.svg" alt="" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                  </svg>
                   <Link to="/profile"><p>Meu Perfil</p></Link>
                 </div>
 
                 <div className='menu-options-cart'>
-                  <img src="/public/cart.svg" alt="" />
-                  <p>Produtos</p>
-                </div>
-
-                <div className='menu-options-support'>
-                  <img src="/public/support.svg" alt="" />
-                  <p>Suporte KeyFlix</p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                    <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z" />
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                  </svg>
+                  <p>Licenças de Uso</p>
                 </div>
               </div>
             </div>
@@ -134,7 +142,7 @@ function Dashboard() {
             <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
               <div className='dashboard-header'>
                 <h1 className='dashboard-title'>Dashboard</h1>
-                <p className='dashboard-subtitle'>Bem-vindo(a) a KeyFlix, <font color='#0356bb'>{user.name}!</font></p>
+                <p className='dashboard-subtitle'>Bem-vindo(a) a AutSuporte, <font color='#0356bb'>{user.name}!</font></p>
               </div>
 
               <div className='dashboard-content'>
@@ -142,8 +150,8 @@ function Dashboard() {
                 <div className='dashboard-add-informations'>
                   <h2 className='dashboard-section-title'>Dados Cadastrais</h2>
                   <div className='add-informations-content'>
-                    <h1 className='dashboard-informations-text'>Adicione seus dados e informações e disfrute dos nossos produtos!</h1>
-                    <Link to="/profile"><button className='btn-header-user'>Meu Perfil</button></Link>
+                    <h1 className='dashboard-informations-text'>Adicione seus dados e informações aqui!</h1>
+                    <Link to="/profile"><button className='autsuporte-header-options'>Meu Perfil</button></Link>
                   </div>
                 </div>
 

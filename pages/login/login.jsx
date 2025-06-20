@@ -38,7 +38,7 @@ function Login() {
                             Manter-me conectado
                         </label>
                         
-                        <Link to='/dashboard'><button type="submit" className='btn-login'>Login</button></Link>
+                        <Link to='/dashboard'><button type="submit" className='btn-login'>Entrar</button></Link>
 
                     </div>
                 </form>
