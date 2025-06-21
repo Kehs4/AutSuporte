@@ -1,0 +1,113 @@
+.menu-autsuporte {
+    width: 0;
+    min-width: 0;
+    max-width: 280px;
+    overflow: hidden;
+    transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-right: 1px solid #ccc;
+    position: relative;
+  }
+  
+  .menu-autsuporte.open {
+    width: 280px;
+    min-width: 280px;
+  }
+  
+  .menu-autsuporte .menu-autsuporte-user,
+  .menu-autsuporte .menu-options-box {
+    opacity: 0;
+    transition: opacity 0.3s 0.2s;
+    
+  }
+  
+  .menu-autsuporte.open .menu-autsuporte-user,
+  .menu-autsuporte.open .menu-options-box {
+    opacity: 1;
+  }
+  
+  .btn-menu {
+    border: none;
+    cursor: pointer;
+    margin-right: 30px;
+    padding: 3px 10px;
+    background-color: #5f5f5f;
+    color: rgb(255, 255, 255);
+  }
+  
+  .btn-menu:hover {
+    transform: scale(1.03);
+    transition: all 0.3s;
+  }
+  
+  .menu-autsuporte-user {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    color: black;
+    margin-top: 40px;
+  }
+  
+  .user-initial {
+    text-transform: uppercase;
+    font-family: Arial, sans-serif;
+  }
+  
+  .user-image {
+    border-radius: 50%;
+    margin: 0 15px;
+  }
+  
+  .menu-user-name {
+    font-size: 15px;
+    font-weight: 300;
+    color: #303030;
+  }
+  
+  .menu-options-box {
+    margin-top: 100px;
+    display: grid;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .menu-options-box a {
+    text-decoration: none;
+    color: #525252;
+  }
+  
+  .menu-options-box a:hover{
+    color: black;
+  }
+  
+  .menu-options-user,
+  .menu-options-dashboard,
+  .menu-options-licences{
+    display: flex;
+    font-size: 1rem;
+    line-height: 2rem;
+    align-items: center;
+    font-weight: 300;
+    cursor: pointer;
+    color: #525252;
+  }
+
+  .menu-options-user:hover,
+  .menu-options-dashboard:hover,
+  .menu-options-licences:hover {
+    background-color: #ebebeb;
+    outline: 1px solid #e4e4e4;
+    color: rgb(0, 0, 0);
+    
+  }
+  
+  .menu-options-hover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 15px;
+  }
+
+

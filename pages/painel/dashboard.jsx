@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../header.css';
 import './dashboard.css';
+import '../../components/MenuAutSuporte.css'
 import { Link } from 'react-router-dom'
 import Loading from '../../components/Loading';
 import MenuToggleProvider from '../../components/MenuToggleProvider';
+import MenuAutSuporte from '../../components/MenuAutSuporte';
 
 function Dashboard() {
+
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({
     name: '',
@@ -22,10 +25,29 @@ function Dashboard() {
     keys: '',
   });
 
+  const userOn = JSON.parse(localStorage.getItem("user"));
 
+  if (!userOn) {
+    return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
+        <p>Usuário não encontrado. Por favor, faça login novamente.</p>
 
+        <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
+    </div>;
+}
 
   const [userColor, setUserColor] = useState('');
+
+  // Função para obter ou gerar cor persistente
+  function getOrCreateUserColor(userId) {
+    // Use o id do usuário como chave, se houver
+    const key = `userColor_${userId}`;
+    let color = localStorage.getItem(key);
+    if (!color) {
+      color = getRandomColor();
+      localStorage.setItem(key, color);
+    }
+    return color;
+  }
 
   function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -35,6 +57,8 @@ function Dashboard() {
     }
     return color;
   }
+
+  
 
   useEffect(() => {
     document.title = "AutSuporte - Dashboard";
@@ -46,7 +70,10 @@ function Dashboard() {
       setUser(JSON.parse(storedUser));
     }
 
-    setUserColor(getRandomColor());
+    // Use o id ou email do usuário para garantir cor única por usuário
+    if (userOn) {
+      setUserColor(getOrCreateUserColor(userOn.email));
+  }
 
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -70,14 +97,12 @@ function Dashboard() {
             <div className='autsuporte-header'>
               <button className='btn-menu' id='menu-switch' onClick={menuSwitch}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi list" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                  <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                 </svg>
               </button>
 
               <h1 className='autsuporte-header-title'>AutSuporte</h1>
             </div>
-
-
 
             <nav className='autsuporte-header-options'>
               <Link to="/profile">Meu Perfil</Link>
@@ -85,59 +110,7 @@ function Dashboard() {
           </div>
 
           <div className="dashboard-flex-wrapper">
-            <div className={`menu-keyflix${isMenuOpen ? ' open' : ''}`} id='menu-keyflix'>
-              <div className='menu-keyflix-user'>
-                {user.image ? (
-                  <img src={user.image} alt="Foto do usuário" className='user-image' id='user-image' width={40} height={40} />
-                ) : (
-                  <div
-                    className='user-initial'
-                    style={{
-                      backgroundColor: userColor,
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      fontSize: '18px',
-                      fontWeight: 'bold',
-                      color: '#fff',
-                      margin: '0 15px'
-                    }}
-                  >
-                    {user.name ? user.name.charAt(0).toUpperCase() : '?'}
-                  </div>
-                )}
-                <h1 className='menu-user-name'>{user.name} {user.surname}Nome será aqui</h1>
-              </div>
-
-
-              <div className='menu-options-box'>
-
-                <div className='menu-options-dashboard'>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
-                  </svg>
-                  <Link to="/dashboard"><p>Dashboard</p></Link>
-                </div>
-                <div className='menu-options-user'>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                  </svg>
-                  <Link to="/profile"><p>Meu Perfil</p></Link>
-                </div>
-
-                <div className='menu-options-cart'>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-data" viewBox="0 0 16 16">
-                    <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z" />
-                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
-                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
-                  </svg>
-                  <p>Licenças de Uso</p>
-                </div>
-              </div>
-            </div>
+            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} />
 
             <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
               <div className='dashboard-header'>

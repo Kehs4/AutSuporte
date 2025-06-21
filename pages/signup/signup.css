@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  
+  .title-signup {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+    text-shadow: 1px 1px 10px rgba(0, 119, 255, 0.2);
+  }
+  
+  /* Modernização do layout do formulário com design claro */
+  .form-signup {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    gap: 15px;
+    justify-content: center;
+    padding: 15px;
+  }
+  
+  .div-inputs-signup,
+  .div-email-password,
+  .div-password,
+  .div-address,
+  .div-birthdate,
+  .div-terms,
+  .div-submit {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 700px;
+  }
+  
+  .password-strength {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  
+  .password-strength.fraca {
+    color: red;
+  }
+  
+  .password-strength.média {
+    color: orange;
+  }
+  
+  .password-strength.forte {
+    color: green;
+  }
+  
+  .password-error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+  
+  .div-inputs-signup {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  #signup-name {
+    display: flex;
+    width: 330px;
+  }
+  
+  
+  .div-email-password {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .div-number-complement {
+    display: flex;
+    gap: 80px;
+    margin-top: 10px;
+  }
+  
+  #signup-number-address::-webkit-inner-spin-button,
+  #signup-number-address::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  
+  #signup-number-address {
+      text-decoration: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+  }
+  
+  .inputs-signup {
+    width: 100%;
+    padding: 10px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .inputs-signup:focus {
+    outline: none;
+    border-color: #0077ff;
+    box-shadow: 0 0 8px #0077ff;
+  }
+  
+  .div-terms {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .div-terms input {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .btn-signup {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn-signup:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .div-box-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modal-overlay-success {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-container-success {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px 30px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .modal-icon-success {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .modal-checkmark {
+    color: #0356bb;
+  }
+  
+  .modal-title-success {
+    color: #0356bb;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    text-shadow: #008cff8c 0px 0px 10px;
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .modal-message-success {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .modal-button-success {
+    background-color: #0356bb;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .modal-button-success:hover {
+    background-color: #0f6aeb;
+    transform: scale(1.02);
+  }
