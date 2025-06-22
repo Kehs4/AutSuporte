@@ -1,13 +1,17 @@
 import { React, useState, useEffect } from "react";
 import Loading from "../../components/Loading";
 import { Link, useNavigate } from "react-router-dom";
-import './licences.css'
+import './licenses.css'
 import '../header.css'
 import '../painel/dashboard.css'
 import '../../components/MenuAutSuporte.css'
 import MenuAutSuporte from '../../components/MenuAutSuporte';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import StorageIcon from '@mui/icons-material/Storage';
 
-const Licences = () => {
+const Licenses = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -105,6 +109,11 @@ const Licences = () => {
         return "→";
     };
 
+    const totalClientes = clients.length;
+    const totalLicencasAtivas = clients.reduce((total, client) => total + (Number(client.keys) || 0), 0);
+    const totalLicencasMesPassado = clients.reduce((total, client) => total + (Number(client.keys_mes_passado) || 0), 0);
+    const totalLicencasServidor = clients.reduce((total, client) => total + (Number(client.licencas_servidor) || 0), 0);
+
     return (
         <>
             <div className='autsuporte-container-dashboard'>
@@ -132,11 +141,59 @@ const Licences = () => {
                         <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são os dados de licenças de usos dos clientes.</p>
                     </div>
 
-                    <div className='dashboard-content-container'>
-                        <div className='dashboard-content-licences'>
 
-                            <table className='table-licences'>
-                                <thead className='table-licences-head'>
+
+                    <div className='dashboard-content-container-licenses'>
+
+                        <div className='dashboard-content-stats'>
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <PeopleOutlineIcon style={{ color: '#006AAA' }}></PeopleOutlineIcon>
+                                    <h1>Total de Clientes</h1>
+                                </div>
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    {totalClientes}
+                                </p>
+                            </div>
+
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <AutoGraphIcon style={{ color: 'green' }}></AutoGraphIcon>
+                                    <h1>Licenças de Uso Ativas</h1>
+                                </div>
+
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    {totalLicencasAtivas}
+                                </p>
+                            </div>
+
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <SignalCellularAltIcon style={{ color: 'orange' }}></SignalCellularAltIcon>
+                                    <h1>Licenças Mês Passado</h1>
+                                </div>
+
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    {totalLicencasMesPassado}
+                                </p>
+                            </div>
+
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <StorageIcon style={{ color: 'purple' }}></StorageIcon>
+                                    <h1>Licenças de Servidor</h1>
+                                </div>
+
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    {totalLicencasServidor}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className='dashboard-content-licenses'>
+
+                            <table className='table-licenses'>
+                                <thead className='table-licenses-head'>
                                     <tr>
                                         <th>Nome do Cliente</th>
                                         <th>Licenças no mês passado</th>
@@ -153,8 +210,8 @@ const Licences = () => {
                                     ) : (
                                         clients.map((client, index) => {
                                             const tendencia = calcularTendencia(
-                                                Number(client.licencas),
-                                                Number(client.licencas_mes_passado)
+                                                Number(client.keys),
+                                                Number(client.keys_mes_passado)
                                             );
                                             const classe = getClasseTendencia(tendencia);
                                             const icone = getIconeTendencia(tendencia);
@@ -162,10 +219,10 @@ const Licences = () => {
                                             return (
                                                 <tr key={index}>
                                                     <td>{client.name}</td>
-                                                    <td>{client.licencas_mes_passado}</td>
-                                                    <td>{client.licencas}</td>
+                                                    <td>{client.keys_mes_passado}</td>
+                                                    <td>{client.keys}</td>
                                                     <td>{client.licencas_servidor}</td>
-                                                    <td style={{ ...tendenciaStyle[classe] }}>
+                                                    <td style={{ ...tendenciaStyle[classe], }}>
                                                         {icone} {tendencia === "∞" ? "∞%" : `${tendencia}%`}
                                                     </td>
                                                 </tr>
@@ -174,7 +231,6 @@ const Licences = () => {
                                     }
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -185,9 +241,9 @@ const Licences = () => {
 };
 
 const tendenciaStyle = {
-    positivo: { color: "green", fontWeight: "bold" },
-    negativo: { color: "red", fontWeight: "bold" },
-    neutro: { color: "gray", fontWeight: "bold" },
+    positivo: { color: "rgb(24, 180, 32)", fontWeight: "bold" },
+    negativo: { color: "rgb(189, 27, 27)", fontWeight: "bold" },
+    neutro: { color: "rgb(189, 189, 189)", fontWeight: "bold" },
 };
 
-export default Licences;
+export default Licenses;

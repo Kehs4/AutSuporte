@@ -1,0 +1,91 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-content-container-licenses {
+    align-items: center;
+    padding: 1rem;
+}
+
+.dashboard-content-stats {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-stats-card {
+    border-radius: 8px;
+    border: 1px solid #cccccca1;
+    min-width: 400px;
+    padding: 6px;
+}
+
+.dashboard-stats-title {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    gap: 10px;
+}
+
+.dashboard-stats-title h1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(66, 66, 66);
+}
+
+.dashboard-stats-card p {
+    margin-left: 10px;
+}
+
+.dashboard-content-licenses {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 100%;
+}
+
+.table-licenses {
+    flex-direction: column;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-licenses-head{
+    background-color: var(--primary-color);
+    text-align: left;
+}
+
+.table-licenses-head th {
+    font-weight: 300;
+    padding: 15px;
+    border: 1px solid white;
+}
+
+.table-body {
+    padding: 15px;
+    background-color: var(--text-color);
+    color: white;
+}
+
+.table-body td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid white;
+    font-weight: 200;
+}
+
+
+.table-body tr:hover {
+    background-color: rgb(55, 55, 65);
+}
+
+
+
+
+
