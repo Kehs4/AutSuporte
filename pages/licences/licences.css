@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-content-licences {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 100%;
+}
+
+.table-licences {
+    flex-direction: column;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-licences-head{
+    background-color: rgb(255, 115, 0);
+    text-align: left;
+}
+
+.table-licences-head th {
+    font-weight: 300;
+    padding: 15px;
+    border: 1px solid white;
+}
+
+.table-body {
+    padding: 15px;
+    background-color: rgb(32, 32, 36);
+    color: white;
+}
+
+.table-body td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid white;
+    font-weight: 200;
+}
+
+
+.table-body tr:hover {
+    background-color: rgb(55, 55, 65);
+}
+
+
+
+
+

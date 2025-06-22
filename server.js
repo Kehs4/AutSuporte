@@ -177,6 +177,33 @@ app.post('/api/user/update', async (req, res) => {
   }
 });
 
+
+app.get('/api/clientes', async (req, res) => {
+
+  try {
+    const query = `
+    SELECT id, name, surname, email, phone, cep, address, number, complement, city, state, birthdate, keys, keys_mes_passado
+    FROM users
+    WHERE keys IS NOT NULL
+    `;
+
+    const result = await pool.query(query);
+  
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Clientes não encontrados.' });
+    }
+
+    res.status(200).json({
+      message: 'Dados dos clientes recebidos com sucesso!',
+      user: result.rows
+    });
+  }
+  catch (error) {
+      console.error('Erro ao buscar clientes:', error);
+      res.status(500).json({ error: 'Erro interno do servidor ao buscar clientes.' });
+  }
+});
+
 // Inicia o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
