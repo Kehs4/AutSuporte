@@ -6,6 +6,7 @@ import Profile from './painel/profile/profile';
 import SignUp from './signup/signup';
 import EditProfile from './painel/profile/editprofile';
 import Licenses from './licences/licenses';
+import Errors from './errors/errors';
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/profile/edit' element={<EditProfile />} />
         <Route path='/licences' element={<Licenses />} />
+        <Route path='/errors' element={<Errors />} />
       </Routes>
   );
 };
