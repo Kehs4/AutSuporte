@@ -205,7 +205,7 @@ const Licenses = () => {
                                 <tbody className='table-body'>
                                     {clients.length === 0 ? (
                                         <tr>
-                                            <td colSpan={4} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
+                                            <td colSpan={5} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
                                         </tr>
                                     ) : (
                                         clients.map((client, index) => {
