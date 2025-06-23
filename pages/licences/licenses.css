@@ -21,7 +21,7 @@
 .dashboard-stats-card {
     border-radius: 8px;
     border: 1px solid #cccccca1;
-    min-width: 400px;
+    min-width: 350px;
     padding: 6px;
 }
 
@@ -52,7 +52,7 @@
 
 .table-licenses {
     flex-direction: column;
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
 }
 

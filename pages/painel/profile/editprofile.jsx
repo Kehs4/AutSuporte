@@ -196,7 +196,6 @@ const EditProfile = () => {
                                 <div className='user-details'>
                                     <h2 className='user-name'>{user.name} {user.surname}</h2>
                                     <p className='user-email'>{user.email}</p>
-                                    <p className='keys-quantity'>{user.keys} Keys</p>
 
                                 </div>
                             </div>
@@ -303,7 +302,7 @@ const EditProfile = () => {
                                     </div>
                                 </div>
 
-                                <div className='menu-options-box' style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'end' }}>
+                                <div className='menu-options-box-profile' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
                                     <Link to='/profile'>
                                         <button className='btn-cancel'>Cancelar</button>
                                     </Link>

@@ -144,7 +144,7 @@ const Profile = () => {
                 <div className='user-details'>
                   <h2 className='user-name'>{user.name} {user.surname}</h2>
                   <p className='user-email'>{user.email}</p>
-                  <p className='keys-quantity'>{user.keys} Keys</p>
+                  
 
                   <Link to="/profile/edit">
                     <button className='btn-edit-profile'>Editar Perfil</button>
@@ -202,7 +202,7 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <div className='menu-options-box'>
+                <div className='menu-options-box-profile'>
                   <button className='btn-logout' onClick={() => setShowLogoutModal(true)}>Logout</button>
                 </div>
 

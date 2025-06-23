@@ -20,14 +20,13 @@ html {
 .dashboard-flex-wrapper {
   display: flex;
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
 }
 
 .dashboard-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
   flex: 1;
   transition: margin-left 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   margin-left: 0;
@@ -35,17 +34,17 @@ html {
 
 .dashboard-container.menu-open {
   transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-  background: linear-gradient(180deg, #ffffff 70%, var(--fade-color) 100%);
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   border-right: 1px solid #ccc;
   visibility: visible;
   pointer-events: auto;
+  height: 100vh;
 }
 
 .dashboard-header {
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
+  padding: 20px;
   background: #ffffff;
   border-bottom: 1px solid #cccccca1;
 }

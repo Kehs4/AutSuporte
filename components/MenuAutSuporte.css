@@ -1,6 +1,7 @@
 .menu-autsuporte {
     width: 0;
     min-width: 0;
+    height: 100%;
     max-width: 280px;
     overflow: hidden;
     transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
@@ -13,6 +14,7 @@
   .menu-autsuporte.open {
     width: 280px;
     min-width: 280px;
+    min-height: 100vh;
   }
   
   .menu-autsuporte .menu-autsuporte-user,
