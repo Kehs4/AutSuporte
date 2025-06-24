@@ -1,10 +1,14 @@
 import { React, useState, useEffect } from "react";
 import Loading from "../../components/Loading";
 import { Link, useNavigate } from "react-router-dom";
+import './errors.css'
 import '../header.css'
 import '../painel/dashboard.css'
 import '../../components/MenuAutSuporte.css'
 import MenuAutSuporte from '../../components/MenuAutSuporte';
+import StorageIcon from '@mui/icons-material/Storage';
+import ApiIcon from '@mui/icons-material/Api';
+import GppMaybeIcon from '@mui/icons-material/GppMaybe';
 
 const Errors = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +16,8 @@ const Errors = () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     const [userColor, setUserColor] = useState('');
+
+    const [errors, setErrors] = useState([]);
 
     // Função para obter ou gerar cor persistente
     function getOrCreateUserColor(userId) {
@@ -49,6 +55,16 @@ const Errors = () => {
     useEffect(() => {
         document.title = "AutSuporte - Logs de Erros";
 
+        async function fetchErrors() {
+            try {
+                const response = await fetch("http://localhost:9000/api/clientes");
+                const data = await response.json();
+                setClients(data.user || []);
+            } catch (erro) {
+                console.error("Erro ao buscar dados da API:", erro);
+            }
+        }
+
         // Defina a cor do usuário ao montar o componente
         if (user) {
             setUserColor(getOrCreateUserColor(user.email || user.id || "default"));
@@ -59,13 +75,17 @@ const Errors = () => {
         }, 2000);
 
 
-
+        fetchErrors();
         return () => clearTimeout(timer);
     }, []);
 
     if (isLoading) {
         return <Loading />;
     }
+
+    const totalErrors = errors.length;
+    const totalErrorsDB = errors.reduce((total, errors) => total + (Number(errors.errorDB) || 0), 0);
+    const totalErrorsAPI = errors.reduce((total, errors) => total + (Number(errors.errorAPI) || 0), 0);
 
     return (
         <>
@@ -90,12 +110,98 @@ const Errors = () => {
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>
-                        <h1 className='dashboard-title'>Licenças de Uso</h1>
+                        <h1 className='dashboard-title'>Logs de Erros</h1>
                         <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são os dados de log de erros dos clientes.</p>
                     </div>
 
                     <div className='dashboard-content-container-errors'>
+                        <div className='dashboard-content-errors'>
+                            <div className='dashboard-header-errors'>
+                                <div className='dashboard-header-options'>
+                                    <select name="errors-select" id="errors-select" className='errors-select'>
+                                        <option value="all">Todos</option>
+                                        <option value="edb">Erros de Banco de Dados</option>
+                                        <option value="eapi">Erros de API</option>
+                                    </select>
+                                </div>
 
+                                <div className='dashboard-header-search'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                    <input type="text" placeholder='Buscar:' />
+                                </div>
+
+                                <div className='dashboard-errors-countrow'>
+                                    <select name="rows-count" id="errors-row-count" className="errors-countrow">
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className='dashboard-content-stats'>
+                                <div className='dashboard-stats-card'>
+                                    <div className='dashboard-stats-title'>
+                                        <GppMaybeIcon style={{ color: 'red' }}></GppMaybeIcon>
+                                        <h1>Total de Erros</h1>
+                                    </div>
+                                    <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                        {totalErrors}
+                                    </p>
+                                </div>
+
+                                <div className='dashboard-stats-card'>
+                                    <div className='dashboard-stats-title'>
+                                        <StorageIcon style={{ color: 'purple' }}></StorageIcon>
+                                        <h1>Total de Erros de Banco de Dados</h1>
+                                    </div>
+
+                                    <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                        {totalErrorsDB}
+                                    </p>
+                                </div>
+
+                                <div className='dashboard-stats-card'>
+                                    <div className='dashboard-stats-title'>
+                                        <ApiIcon style={{ color: 'orange' }}></ApiIcon>
+                                        <h1>Total de Erros de API</h1>
+                                    </div>
+
+                                    <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                        {totalErrorsAPI}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <table className='table-errors'>
+                                    <thead className='table-errors-head'>
+                                        <tr>
+                                            <th>Nome do Cliente</th>
+                                            <th>Error Log</th>
+                                            <th>Mensagem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='table-body-errors'>
+                                        {errors.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={3} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
+                                            </tr>
+                                        ) : (
+                                            errors.map((error, index) => (
+                                                <tr key={index}>
+                                                    <td>{error.clientName}</td>
+                                                    <td>{error.errorLog}</td>
+                                                    <td>{error.message}</td>
+                                                </tr>
+                                            ))
+                                        )} 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
