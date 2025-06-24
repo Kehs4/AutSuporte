@@ -7,6 +7,7 @@ import saveData from '../../components/saveDataModal'
 import insertData from '../../components/insertData'
 import { Link } from 'react-router-dom'
 import infoClientes from '../../components/infoclientes'
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import './clients.css'
 
 function Clients() {
@@ -17,6 +18,7 @@ function Clients() {
     const [userColor, setUserColor] = useState('');
 
     const [clientspl, setClientspl] = useState([])
+    const [rowCount, setRowCount] = useState('');
 
     // Função para obter ou gerar cor persistente
     function getOrCreateUserColor(userId) {
@@ -44,7 +46,7 @@ function Clients() {
     }
 
     function handleCloseMenu() {
-    setIsMenuOpen(false);
+        setIsMenuOpen(false);
     }
 
     if (!user) {
@@ -58,7 +60,6 @@ function Clients() {
         document.title = "AutSuporte - Clientes";
 
         const carregarScripts = async () => {
-
             const proxy = 'https://cors-anywhere.herokuapp.com/';
             const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
             const fullUrl = proxy + url;
@@ -71,18 +72,25 @@ function Clients() {
                     const tableBody = document.querySelector('#clientes-table tbody');
                     tableBody.innerHTML = '';  // Limpa a tabela antes de popular
 
-                    data.forEach(cliente => {
+                    // Filtra pelo searchTerm
+                    const filteredData = data.filter(cliente =>
+                        cliente.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+
+                    const limitedData = rowCount ? filteredData.slice(0, Number(rowCount)) : filteredData;
+
+                    limitedData.forEach(cliente => {
                         const row = document.createElement('tr');
-                        const rowID = row.setAttribute('id', cliente.cod_cliente);
+                        row.setAttribute('id', cliente.cod_cliente);
                         row.innerHTML = `
-                                        <td id="client-code">${cliente.cod_cliente}</td>
-                                        <td id="client-name-id" class="client-name-cell">${cliente.nome_cliente}</td>
-                                        <td>${cliente.acesso_cliente_teamviewer}</td>
-                                        <td>${cliente.senha_acesso_cliente_teamviewer}</td>
-                                        <td>${cliente.acesso_cliente_anydesk}</td>
-                                        <td>${cliente.senha_acesso_cliente_anydesk}</td>
-                                        <td>${cliente.versao_vertis_cliente}</td>
-          	            `;
+                        <td id="client-code">${cliente.cod_cliente}</td>
+                        <td id="client-name-id" class="client-name-cell">${cliente.nome_cliente}</td>
+                        <td>${cliente.acesso_cliente_teamviewer}</td>
+                        <td>${cliente.senha_acesso_cliente_teamviewer}</td>
+                        <td>${cliente.acesso_cliente_anydesk}</td>
+                        <td>${cliente.senha_acesso_cliente_anydesk}</td>
+                        <td>${cliente.versao_vertis_cliente}</td>
+                    `;
                         tableBody.appendChild(row);
                     });
                 };
@@ -118,7 +126,34 @@ function Clients() {
 
 
         return () => clearTimeout(timer);
-    }, []); // O array vazio garante que isso seja chamado apenas uma vez, na montagem do componente
+    }, [rowCount]); // O array vazio garante que isso seja chamado apenas uma vez, na montagem do componente
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+
+    // Adicione este useEffect para filtrar a tabela conforme o texto digitado
+    useEffect(() => {
+        const input = document.getElementById('search-clients');
+        if (input) {
+            input.value = searchTerm;
+        }
+
+        const table = document.getElementById('clientes-table');
+        if (!table) return;
+
+        const rows = table.getElementsByTagName('tr');
+        for (let i = 1; i < rows.length; i++) { // Começa do 1 para pular o cabeçalho
+            const nameCell = rows[i].querySelector('.client-name-cell');
+            if (nameCell) {
+                const name = nameCell.textContent.toLowerCase();
+                if (name.includes(searchTerm.toLowerCase())) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    }, [searchTerm]);
 
     if (isLoading) {
         return <Loading />;
@@ -152,6 +187,59 @@ function Clients() {
                     </div>
 
                     <div className='dashboard-content-container-clients'>
+                       <div className='dashboard-content-stats-clients'>
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <PeopleOutlineIcon style={{ color: '#006AAA' }}></PeopleOutlineIcon>
+                                    <h1>Total de Clientes</h1>
+                                </div>
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    0
+                                </p>
+                            </div>
+
+                            <div className='dashboard-stats-card'>
+                                <div className='dashboard-stats-title'>
+                                    <PeopleOutlineIcon style={{ color: '#006AAA' }}></PeopleOutlineIcon>
+                                    <h1>Versão Atual</h1>
+                                </div>
+                                <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                    2.9.61.2
+                                </p>
+                            </div>
+
+                        </div>
+                       
+                        <div className='dashboard-header-clients'>
+
+                            <div className='dashboard-header-search'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    placeholder='Buscar:'
+                                    id='search-clients'
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+
+                            <div className='dashboard-clients-countrow'>
+                                <select
+                                    name="rows-count"
+                                    id="clients-row-count"
+                                    className="clients-countrow"
+                                    value={rowCount}
+                                    onChange={e => setRowCount(Number(e.target.value))}
+                                >
+                                    <option value="">Todos</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div className="div-form-clients">
                             <div className="div-form-clients-content">

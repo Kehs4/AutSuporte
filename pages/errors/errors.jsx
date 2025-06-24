@@ -18,6 +18,22 @@ const Errors = () => {
     const [userColor, setUserColor] = useState('');
 
     const [errors, setErrors] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterType, setFilterType] = useState('all');
+
+    const filteredErrors = errors.filter(error => {
+        // Filtro pelo select
+        if (filterType === 'edb' && !error.errorLog?.toLowerCase().includes('banco')) return false;
+        if (filterType === 'eapi' && !error.errorLog?.toLowerCase().includes('api')) return false;
+        // Filtro pelo campo de busca (nome do cliente ou mensagem)
+        if (searchTerm.trim() === '') return true;
+        const search = searchTerm.toLowerCase();
+        return (
+            error.clientName?.toLowerCase().includes(search) ||
+            error.errorLog?.toLowerCase().includes(search) ||
+            error.message?.toLowerCase().includes(search)
+        );
+    });
 
     // Função para obter ou gerar cor persistente
     function getOrCreateUserColor(userId) {
@@ -45,7 +61,7 @@ const Errors = () => {
     }
 
     function handleCloseMenu() {
-    setIsMenuOpen(false);
+        setIsMenuOpen(false);
     }
 
     if (!user) {
@@ -122,7 +138,13 @@ const Errors = () => {
                         <div className='dashboard-content-errors'>
                             <div className='dashboard-header-errors'>
                                 <div className='dashboard-header-options'>
-                                    <select name="errors-select" id="errors-select" className='errors-select'>
+                                    <select
+                                        name="errors-select"
+                                        id="errors-select"
+                                        className='errors-select'
+                                        value={filterType}
+                                        onChange={e => setFilterType(e.target.value)}
+                                    >
                                         <option value="all">Todos</option>
                                         <option value="edb">Erros de Banco de Dados</option>
                                         <option value="eapi">Erros de API</option>
@@ -133,7 +155,13 @@ const Errors = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                     </svg>
-                                    <input type="text" placeholder='Buscar:' />
+                                    <input
+                                        type="text"
+                                        placeholder='Buscar:'
+                                        id='errors-search'
+                                        value={searchTerm}
+                                        onChange={e => setSearchTerm(e.target.value)}
+                                    />
                                 </div>
 
                                 <div className='dashboard-errors-countrow'>
@@ -189,19 +217,19 @@ const Errors = () => {
                                         </tr>
                                     </thead>
                                     <tbody className='table-body-errors'>
-                                        {errors.length === 0 ? (
+                                        {filteredErrors.length === 0 ? (
                                             <tr>
                                                 <td colSpan={3} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
                                             </tr>
                                         ) : (
-                                            errors.map((error, index) => (
+                                            filteredErrors.map((error, index) => (
                                                 <tr key={index}>
                                                     <td>{error.clientName}</td>
                                                     <td>{error.errorLog}</td>
                                                     <td>{error.message}</td>
                                                 </tr>
                                             ))
-                                        )} 
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
