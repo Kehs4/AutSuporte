@@ -1,0 +1,527 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.div-form-clients {
+    display: none; 
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(29, 33, 39, 0.611);
+}
+
+.div-form-clients-content{
+    border-radius: 5px;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.form-clients {
+    display: flex;
+    width: 1050px;
+    height: 90vh;
+    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    border: 1px rgb(255, 255, 255) solid;
+    border-top: none;
+    border-bottom: none;
+    box-shadow: 0px 10px 30px -15px rgb(255, 255, 255);
+    padding: 6px;
+    border-radius: 15px;
+    font-weight: 200;
+    background-color: rgba(16, 19, 24, 0.925);
+}
+
+.client-identifier {
+    display: flex;
+    width: 100%;
+}
+
+#client-modal {
+    display: flex;
+    margin: auto;
+    justify-content: end;
+    font-size: 25px;
+    padding: 5px 20px;
+    font-weight: 100;
+    color: white;
+    border-bottom: 1px solid rgba(255, 167, 4, 0.473);
+    border-radius: 5px;
+    box-shadow: 0px 4px 5px -5px rgb(255, 145, 0);
+    text-shadow: 2px 1px 3px rgb(158, 155, 151);
+}
+
+.btn-info-client {
+    position: fixed;
+    margin-top: 10px;
+    margin-left: 15px;
+    padding: 5px;
+    font-size: 10px;
+    background-color: rgba(32, 40, 51, 0.808);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    border: 1px solid rgba(255, 167, 4, 0.473);
+    border-radius: 5px;
+}
+
+.btn-info-client a {
+    color: white;
+    text-decoration: none;
+}
+
+.btn-info-client:hover {
+    transition: 0.2s;
+    scale: 1.01;
+    border-color: rgba(32, 40, 51, 0.808);
+    background-color: rgba(235, 102, 24, 1);
+    
+}
+
+.search-clients {  
+    display: flex;
+    height: 100%;
+    background-color: rgba(14, 18, 27, 0.61);
+    border-radius: 20px;
+    label {
+        padding: 3px;
+        color: rgb(252, 151, 56);
+        font-weight: 100;
+        text-shadow: 0px 0px 2px rgba(209, 124, 54, 0.856);
+    }
+    input {  
+        height: 30px;
+        width: 250px;
+        padding: 15px;
+        margin: 2px;
+        font-size: 15px;
+        outline: none;
+        border-radius: 7px;
+        font-weight: 200;
+        border: 1px solid rgb(64, 79, 97);
+        color: rgb(255, 255, 255);
+        background-color: rgb(29, 32, 37);
+    }
+    input:disabled {
+        color: rgba(204, 216, 233, 0.808);
+        border: 1px solid rgb(49, 49, 49);
+        background-color: rgba(16, 19, 24, 0.925);
+        cursor: not-allowed;
+    }
+    input:focus {
+        border: 1px solid rgb(255, 145, 0);
+        color: white;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        transition: 0.5s all;
+    }
+    legend {
+        margin: auto;
+        padding: 3px;
+        font-size: 20px;
+        color: white;
+        font-weight: 300;
+        text-shadow: 2px 0px 3px rgba(0, 153, 255, 0.726);
+    }
+    fieldset {
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin: 10px;
+        padding: 25px;
+        border: 1px groove;
+        border-radius: 15px;
+        border-top: none;
+        border-bottom: none;
+        border-color: rgba(252, 252, 252, 0.411);
+    }
+}
+
+.search-clients-buttons {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: auto;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-update {
+    min-width: 110px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgba(32, 40, 51, 0.808);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid rgba(235, 102, 24, 1);
+    margin-right: 15px;
+    font-weight: 200;
+}
+
+.btn-update:hover {
+    scale: 1.013;
+    transition: 0.4s;
+    border-color: rgba(32, 40, 51, 0.808);
+    background-color: rgba(235, 102, 24, 1);
+}
+
+.btn-insert {
+    display: none;
+    min-width: 110px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgba(32, 40, 51, 0.808);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid rgba(235, 102, 24, 1);
+    margin-right: 15px;
+    font-weight: 200;
+}
+
+.btn-insert:hover {
+    scale: 1.013;
+    transition: 0.4s;
+    border-color: rgba(32, 40, 51, 0.808);
+    background-color: rgba(235, 102, 24, 1);
+}
+
+.btn-save {
+    display: none;
+    min-width: 110px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgba(32, 40, 51, 0.808);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid rgba(235, 102, 24, 1);
+    margin-right: 15px;
+    font-weight: 200;
+}
+
+.btn-save:hover {
+    scale: 1.013;
+    transition: 0.4s;
+    border-color: rgba(32, 40, 51, 0.808);
+    background-color: rgba(235, 102, 24, 1);
+}
+
+.btn-close {
+    min-width: 110px;
+    height: 30px;
+    font-size: 15px;
+    background-color: rgba(32, 40, 51, 0.808);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid rgba(235, 102, 24, 1);
+    font-weight: 200;
+}
+
+.btn-close:hover {
+    border-color: rgba(32, 40, 51, 0.808);
+    scale: 1.013;
+    transition: 0.4s;
+    background-color: rgba(235, 102, 24, 1);
+    
+}
+
+.alert-modal-box {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.13);
+}
+
+.alert-modal h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: rgb(29, 33, 39);
+}
+
+.alert-modal p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: rgb(63, 72, 85);
+}
+
+#alert-status {
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: rgb(252, 164, 0);
+}
+
+.btn-confirm {
+    background-color: rgb(235, 102, 24);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 200;
+}
+
+.btn-confirm:hover {
+    background-color: rgb(255, 145, 0);
+    transition: 0.4s;
+}
+
+.btn-alert-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    margin-top: 5px;
+}
+
+.table-clients {
+    flex-direction: column;
+    width: 90%;
+    border-collapse: collapse;
+    margin: auto;
+    margin-top: 20px;
+    background-color: var(--primary-color);
+    text-align: left;
+}
+
+.table-clients th {
+    font-weight: 300;
+    padding: 15px;
+    border: 1px solid white;
+}
+
+.table-body-clients {
+    padding: 15px;
+    background-color: var(--text-color);
+    color: white;
+}
+
+.table-body-clients td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid white;
+    font-weight: 200;
+}
+
+.table-body-clients tr:hover {
+    background-color: rgb(55, 55, 65);
+}
+
+.client-name-cell {
+    max-width: 200px;      /* ajuste conforme necessário */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsividade para telas grandes (largura máxima de 1200px) */
+@media (max-width: 1200px) {
+
+    .form-clients {
+        width: auto;
+        height: auto;
+        margin-top: 38px;
+    }
+
+    .btn-info-client {
+        display: flex;
+        position: relative;
+        align-items: center;
+    }
+
+    #client-modal {
+        padding: 2px 20px;
+        font-size: 20px;
+    }
+
+    .search-clients {
+        width: auto;
+    }
+
+    .table-clients {
+        font-size: 13px;
+    }
+
+    .table-body td {
+        padding: 6px;
+    }
+
+    .search-clients fieldset {
+        height: auto;
+    }
+
+    .search-clients input {
+        width: 150px;
+        font-size: 13px;
+    }
+
+    .search-clients legend {
+        font-size: 17px;
+    }
+}
+
+
+/* Responsividade para tablets (largura máxima de 1000px) */
+@media (max-width: 1024px) {
+
+    .form-clients {
+        width: auto;
+        margin-top: 40px;
+    }
+
+    #client-modal {
+        font-size: 18px;
+    }
+
+    .search-clients {
+        width: auto;
+    }
+
+    .search-clients fieldset label {
+        font-size: 13px;
+    }
+
+    .search-clients legend {
+        font-size: 15px;
+    }
+
+    .btn-close, .btn-save, .btn-update, .btn-insert {
+        height: 26px;
+        width: 70px;
+        font-size: 13px;
+    }
+
+    .search-clients input {
+        width: 150px;
+        font-size: 12px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+}
+
+/* Responsividade para dispositivos móveis (largura máxima de 768px) */
+@media (max-width: 768px) {
+
+    .form-clients {
+        width: 500px;
+        padding: 10px;
+    }
+
+    .search-clients {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+    }
+
+    .search-clients fieldset label {
+        font-size: 13px;
+    }
+
+    .search-clients legend {
+        font-size: 16px;
+    }
+
+    #client-modal {
+        padding: 5px 20px;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .client-data {
+        align-content: start;
+    }
+    
+    .client-access {
+        align-content: start;
+    }
+
+    .client-information {
+        align-content: start;
+    }
+
+    .btn-close, .btn-save, .btn-update, .btn-insert, .btn-delete {
+        font-size: 15px;
+        height: 30px;
+    }
+
+    .search-clients input {
+        font-size: 12px;
+    }
+
+    .search-clients fieldset {
+        width: 210px;
+        height: auto;
+        align-items: center;
+    }
+
+    .search-clients fieldset label {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 740px) {
+
+    .form-clients {
+        width: auto;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        padding: 10px;
+    }
+    .search-clients {
+        justify-content: center;
+        gap: 40px; 
+    }
+
+    .search-clients-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

@@ -46,6 +46,10 @@ const Licenses = () => {
         setIsMenuOpen((prev) => !prev);
     }
 
+    function handleCloseMenu() {
+    setIsMenuOpen(false);
+    }
+
     if (!user) {
         return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
             <p>Usuário não encontrado. Por favor, faça login novamente.</p>
@@ -133,7 +137,7 @@ const Licenses = () => {
             </div>
 
             <div className="dashboard-flex-wrapper">
-                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} />
+                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>

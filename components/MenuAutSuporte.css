@@ -1,7 +1,7 @@
 .menu-autsuporte {
     width: 0;
     min-width: 0;
-    height: 100%;
+    min-height: 100%;
     max-width: 280px;
     overflow: hidden;
     transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
@@ -21,7 +21,6 @@
   .menu-autsuporte .menu-options-box {
     opacity: 0;
     transition: opacity 0.3s 0.2s;
-    
   }
   
   .menu-autsuporte.open .menu-autsuporte-user,
@@ -86,7 +85,8 @@
   .menu-options-user,
   .menu-options-dashboard,
   .menu-options-licences,
-  .menu-options-errors{
+  .menu-options-errors,
+  .menu-options-clients{
     display: flex;
     font-size: 1rem;
     line-height: 2rem;
@@ -99,7 +99,8 @@
   .menu-options-user:hover,
   .menu-options-dashboard:hover,
   .menu-options-licences:hover,
-  .menu-options-errors:hover {
+  .menu-options-errors:hover,
+  .menu-options-clients:hover {
     background-color: #ebebeb;
     outline: 1px solid #e4e4e4;
     color: rgb(0, 0, 0);
