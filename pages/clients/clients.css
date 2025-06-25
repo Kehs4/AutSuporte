@@ -364,6 +364,32 @@ input::-webkit-inner-spin-button {
     margin-top: 5px;
 }
 
+.table-pagination {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 20px;
+    justify-content: flex-end;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.table-pagination button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.table-pagination button:hover {
+    cursor: pointer;
+    background-color: var(--secondary-color);
+}
+
 .table-clients {
     flex-direction: column;
     width: 90%;
@@ -395,6 +421,7 @@ input::-webkit-inner-spin-button {
 
 .table-body-clients tr:hover {
     background-color: rgb(55, 55, 65);
+    cursor: pointer;
 }
 
 .client-name-cell {
