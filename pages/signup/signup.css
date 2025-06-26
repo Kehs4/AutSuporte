@@ -72,9 +72,12 @@
   
   #signup-name {
     display: flex;
-    width: 330px;
+    width: 320px;
   }
   
+  #signup-email {
+    min-width: 400px;
+  }
   
   .div-email-password {
     flex-direction: row;
