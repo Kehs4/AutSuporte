@@ -8,6 +8,7 @@ import EditProfile from './painel/profile/editprofile';
 import Licenses from './licences/licenses';
 import Errors from './errors/errors';
 import Clients from './clients/clients';
+import ClientsData from './clients/clientsData/clientsdata.jsx';
 
 const AppRoutes = () => {
   return (
@@ -21,7 +22,8 @@ const AppRoutes = () => {
         <Route path='/profile/edit' element={<EditProfile />} />
         <Route path='/licences' element={<Licenses />} />
         <Route path='/errors' element={<Errors />} />
-        <Route path='/clients' element={<Clients />} />
+        <Route path='/clientstb' element={<Clients />} />
+        <Route path='/clients' element={<ClientsData />} />
       </Routes>
   );
 };

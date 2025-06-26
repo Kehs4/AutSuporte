@@ -6,6 +6,7 @@ import saveData from '../../components/saveDataModal'
 import { Link } from 'react-router-dom'
 import infoClientes from '../../components/infoclientes'
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import './clients.css'
 
 function Clients() {
@@ -98,8 +99,10 @@ function Clients() {
                     setClientspl(data)
                 };
 
+               
             } catch (error) {
-                console.error("Erro ao carregar os dados:", error);
+                setTimeout(() => {
+                    console.error("Erro ao carregar os dados:", error);
                 const showAlert = document.getElementById('alert-modal-box')
                 const alertTitle = document.getElementById('alert-title')
                 const alertParagraph = document.getElementById('alert-textp')
@@ -113,6 +116,7 @@ function Clients() {
                 alertClose.addEventListener('click', function () {
                     showAlert.style.display = 'none';
                 })
+                }, 3500); 
             }
         };
 
@@ -218,7 +222,7 @@ function Clients() {
 
                             <div className='dashboard-stats-card'>
                                 <div className='dashboard-stats-title'>
-                                    <PeopleOutlineIcon style={{ color: '#006AAA' }}></PeopleOutlineIcon>
+                                    <CloudDownloadIcon style={{ color: 'green' }}></CloudDownloadIcon>
                                     <h1>Versão Atual</h1>
                                 </div>
                                 <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
