@@ -41,7 +41,7 @@ a {
     color: white;
     margin-right: 20px;
     font-size: 14px;
-    background-color: var(--primary-color);
+    background-color: #04204b;
     padding: 8px 12px;
     border-radius: 8px;
     transition: background-color 0.3s ease;
