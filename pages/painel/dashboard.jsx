@@ -10,30 +10,34 @@ import MenuAutSuporte from '../../components/MenuAutSuporte';
 function Dashboard() {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState({
-    name: '',
-    surname: '',
-    email: '',
-    phone: '',
-    cep: '',
-    address: '',
-    number: '',
-    complement: '',
-    city: '',
-    state: '',
-    birthdate: '',
-    keys: '',
-  });
+  const [user, setUser] = useState(null);
 
   const userOn = JSON.parse(localStorage.getItem("user"));
 
+  // Basta passar o token JWT para esta função
+  function parseJwt(token) {
+    if (!token) return null;
+    const base64Url = token.split('.')[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  }
+  const token = userOn?.token;
+  const payload = parseJwt(token);
+
   if (!userOn) {
     return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
-        <p>Usuário não encontrado. Por favor, faça login novamente.</p>
+      <p>Usuário não encontrado. Por favor, faça login novamente.</p>
 
-        <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
+      <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
     </div>;
-}
+  }
 
   const [userColor, setUserColor] = useState('');
 
@@ -41,7 +45,7 @@ function Dashboard() {
   function getOrCreateUserColor(userId) {
     // Use o id do usuário como chave, se houver
     const key = `userColor_${userId}`;
-    let color = localStorage.getItem(key);
+    let color = localStorage.getItem(token ? `userColor_${token}` : key);
     if (!color) {
       color = getRandomColor();
       localStorage.setItem(key, color);
@@ -58,8 +62,6 @@ function Dashboard() {
     return color;
   }
 
-  
-
   useEffect(() => {
     document.title = "AutSuporte - Dashboard";
 
@@ -72,8 +74,8 @@ function Dashboard() {
 
     // Use o id ou email do usuário para garantir cor única por usuário
     if (userOn) {
-      setUserColor(getOrCreateUserColor(userOn.email));
-  }
+      setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
+    }
 
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -110,12 +112,12 @@ function Dashboard() {
           </div>
 
           <div className="dashboard-flex-wrapper">
-            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} />
+            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={menuSwitch}/>
 
             <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
               <div className='dashboard-header'>
                 <h1 className='dashboard-title'>Dashboard</h1>
-                <p className='dashboard-subtitle'>Bem-vindo(a) a AutSuporte, <font color='#0356bb'>{user.name}!</font></p>
+                <p className='dashboard-subtitle'>Bem-vindo(a) a AutSuporte, <font color='#0356bb'>{payload.username}!</font></p>
               </div>
 
               <div className='dashboard-content'>

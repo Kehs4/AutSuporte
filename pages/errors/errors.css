@@ -64,28 +64,56 @@
 
 .table-errors-head{
     background-color: var(--primary-color);
-    text-align: left;
+    text-align: center;
 }
 
 .table-errors-head th {
     font-weight: 300;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid white;
 }
 
 .table-body-errors {
-    padding: 15px;
     background-color: var(--text-color);
     color: white;
 }
 
 .table-body-errors td {
-    padding: 12px;
     text-align: left;
+    padding: 7px;
     border: 1px solid white;
     font-weight: 200;
 }
 
+.table-body-errors td {
+    transition: background-color 0.2s ease;
+    text-align: center;
+}
+
+.cod-idv {
+    max-width: 110px;
+    text-align: center;
+}
+
+.cod-idt {
+    max-width: 150px;
+    text-align: center;
+}
+
+.ind-origin {
+    align-items: center;
+    justify-content: center;
+}
+
+.dth-include {
+    min-width: 170px;
+    text-align: center;
+}
+
+.system-name {
+    width: 160px;
+    text-align: center;
+}
 
 .table-body-errors tr:hover {
     background-color: rgb(55, 55, 65);

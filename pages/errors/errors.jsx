@@ -1,19 +1,38 @@
 import { React, useState, useEffect } from "react";
 import Loading from "../../components/Loading";
-import { Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import './errors.css'
 import '../header.css'
 import '../painel/dashboard.css'
 import '../../components/MenuAutSuporte.css'
 import MenuAutSuporte from '../../components/MenuAutSuporte';
 import StorageIcon from '@mui/icons-material/Storage';
-import ApiIcon from '@mui/icons-material/Api';
-import GppMaybeIcon from '@mui/icons-material/GppMaybe';
+import ApiIcon from '@mui/icons-material/GppMaybe';
+import GppMaybeIcon from '@mui/icons-material/Api';
 
 const Errors = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
+
+    const userOn = JSON.parse(localStorage.getItem("user"));
+
+    // Basta passar o token JWT para esta função
+    function parseJwt(token) {
+        if (!token) return null;
+        const base64Url = token.split('.')[1];
+        if (!base64Url) return null;
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    }
+    const token = userOn?.token;
+    const payload = parseJwt(token);
 
     const [userColor, setUserColor] = useState('');
 
@@ -21,28 +40,26 @@ const Errors = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('all');
 
-    const filteredErrors = errors.filter(error => {
-        // Filtro pelo select
-        if (filterType === 'edb' && !error.errorLog?.toLowerCase().includes('banco')) return false;
-        if (filterType === 'eapi' && !error.errorLog?.toLowerCase().includes('api')) return false;
-        // Filtro pelo campo de busca (nome do cliente ou mensagem)
-        if (searchTerm.trim() === '') return true;
-        const search = searchTerm.toLowerCase();
-        return (
-            error.clientName?.toLowerCase().includes(search) ||
-            error.errorLog?.toLowerCase().includes(search) ||
-            error.message?.toLowerCase().includes(search)
-        );
-    });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(25);
 
     // Função para obter ou gerar cor persistente
     function getOrCreateUserColor(userId) {
         // Use o id do usuário como chave, se houver
         const key = `userColor_${userId}`;
-        let color = localStorage.getItem(key);
+        let color = localStorage.getItem(token ? `userColor_${token}` : key);
         if (!color) {
             color = getRandomColor();
             localStorage.setItem(key, color);
+        }
+        return color;
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
     }
@@ -77,35 +94,61 @@ const Errors = () => {
 
         async function fetchErrors() {
             try {
-                const response = await fetch("http://localhost:9000/api/clientes");
+                const response = await fetch("http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/dados_itg/211/1");
                 const data = await response.json();
-                setClients(data.user || []);
+                console.log(data);
+
+                setErrors(Array.isArray(data) ? data : (data.ultimos_logs || []));
             } catch (erro) {
                 console.error("Erro ao buscar dados da API:", erro);
             }
         }
 
         // Defina a cor do usuário ao montar o componente
-        if (user) {
-            setUserColor(getOrCreateUserColor(user.email || user.id || "default"));
+        if (userOn) {
+            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
         }
 
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
 
-
+        setCurrentPage(1);
         fetchErrors();
         return () => clearTimeout(timer);
-    }, []);
+
+    }, [filterType, rowsPerPage]);
 
     if (isLoading) {
         return <Loading />;
     }
 
-    const totalErrors = errors.length;
-    const totalErrorsDB = errors.reduce((total, errors) => total + (Number(errors.errorDB) || 0), 0);
-    const totalErrorsAPI = errors.reduce((total, errors) => total + (Number(errors.errorAPI) || 0), 0);
+
+
+    // Filtra os erros conforme select e busca
+    const filteredErrors = Array.isArray(errors) && errors
+        .filter(error => {
+            if (filterType !== "all") {
+                return (error.desc_sistema || '').toLowerCase() === filterType.toLowerCase();
+            }
+            return true;
+        })
+        .filter(error => {
+            return (
+                (error.desc_sistema || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (error.tabela || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (error.msg_log || '').toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        });
+
+    const indexOfLastRow = currentPage * rowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    const currentRows = filteredErrors.slice(indexOfFirstRow, indexOfLastRow);
+    const totalPages = Math.ceil(filteredErrors.length / rowsPerPage);
+
+    const totalErrors = filteredErrors.length;
+    const totalErrorsDB = filteredErrors.reduce((total, error) => total + (Number(error.errorDB) || 0), 0);
+    const totalErrorsAPI = filteredErrors.reduce((total, error) => total + (Number(error.errorAPI) || 0), 0);
 
     return (
         <>
@@ -131,7 +174,7 @@ const Errors = () => {
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>
                         <h1 className='dashboard-title'>Logs de Erros</h1>
-                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são os dados de log de erros dos clientes.</p>
+                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são os dados de log de erros dos clientes.</p>
                     </div>
 
                     <div className='dashboard-content-container-errors'>
@@ -146,8 +189,10 @@ const Errors = () => {
                                         onChange={e => setFilterType(e.target.value)}
                                     >
                                         <option value="all">Todos</option>
-                                        <option value="edb">Erros de Banco de Dados</option>
-                                        <option value="eapi">Erros de API</option>
+                                        <option value="Pet Love">Pet Love</option>
+                                        <option value="TMS Logistica">TMS Logística</option>
+                                        <option value="Financeiro Smart">Financeiro Smart</option>
+                                        <option value="Veros">Veros</option>
                                     </select>
                                 </div>
 
@@ -165,12 +210,39 @@ const Errors = () => {
                                 </div>
 
                                 <div className='dashboard-errors-countrow'>
-                                    <select name="rows-count" id="errors-row-count" className="errors-countrow">
+                                    <select
+                                        name="rows-count"
+                                        id="errors-row-count"
+                                        className="errors-countrow"
+                                        value={rowsPerPage}
+                                        onChange={e => setRowsPerPage(Number(e.target.value))}
+                                    >
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
                                     </select>
                                 </div>
+
+                                <div className="table-pagination">
+                                    <button
+                                        onClick={() => setCurrentPage(1)}
+                                        disabled={currentPage === 1}
+                                    >{"<<"}</button>
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                        disabled={currentPage === 1}
+                                    >{"<"}</button>
+                                    <span>Página {currentPage} de {totalPages}</span>
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                        disabled={currentPage === totalPages}
+                                    >{">"}</button>
+                                    <button
+                                        onClick={() => setCurrentPage(totalPages)}
+                                        disabled={currentPage === totalPages}
+                                    >{">>"}</button>
+                                </div>
+
                             </div>
 
                             <div className='dashboard-content-stats'>
@@ -211,26 +283,37 @@ const Errors = () => {
                                 <table className='table-errors'>
                                     <thead className='table-errors-head'>
                                         <tr>
-                                            <th>Nome do Cliente</th>
-                                            <th>Error Log</th>
+                                            <th>ID</th>
+                                            <th>Cód. Sistema</th>
+                                            <th className="system-name">Nome do Sistema</th>
+                                            <th>Tabela</th>
+                                            <th className="cod-idv">Identificador Vertis</th>
+                                            <th className="cod-idt">Identificador Terceiro</th>
+                                            <th className="ind-origin">Origem</th>
                                             <th>Mensagem</th>
+                                            <th className="dth-include">Data Inclusão</th>
+                                            <th>Status Code</th>
                                         </tr>
                                     </thead>
                                     <tbody className='table-body-errors'>
-                                        {filteredErrors.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={3} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
+                                        {currentRows.map((error, index) => (
+                                            <tr key={index}>
+                                                <td>{error.id}</td>
+                                                <td>{error.cod_sistema}</td>
+                                                <td>{error.desc_sistema}</td>
+                                                <td>{error.tabela}</td>
+                                                <td>{error.identificador_vertis}</td>
+                                                <td>{error.identificador_terceiro}</td>
+                                                <td>{error.ind_origem}</td>
+                                                <td>{error.msg_log}</td>
+                                                <td>{error.dth_inclusao}</td>
+                                                <td>{error.status_code}</td>
                                             </tr>
-                                        ) : (
-                                            filteredErrors.map((error, index) => (
-                                                <tr key={index}>
-                                                    <td>{error.clientName}</td>
-                                                    <td>{error.errorLog}</td>
-                                                    <td>{error.message}</td>
-                                                </tr>
-                                            ))
-                                        )}
+                                        ))}
                                     </tbody>
+
+
+
                                 </table>
                             </div>
                         </div>

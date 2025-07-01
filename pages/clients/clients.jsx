@@ -13,6 +13,24 @@ function Clients() {
     const [isLoading, setIsLoading] = useState(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
+    const userOn = JSON.parse(localStorage.getItem("user"));
+
+    // Basta passar o token JWT para esta função
+    function parseJwt(token) {
+        if (!token) return null;
+        const base64Url = token.split('.')[1];
+        if (!base64Url) return null;
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    }
+    const token = userOn?.token;
+    const payload = parseJwt(token);
 
     const [userColor, setUserColor] = useState('');
 
@@ -28,10 +46,19 @@ function Clients() {
     function getOrCreateUserColor(userId) {
         // Use o id do usuário como chave, se houver
         const key = `userColor_${userId}`;
-        let color = localStorage.getItem(key);
+        let color = localStorage.getItem(token ? `userColor_${token}` : key);
         if (!color) {
             color = getRandomColor();
             localStorage.setItem(key, color);
+        }
+        return color;
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
     }
@@ -99,29 +126,29 @@ function Clients() {
                     setClientspl(data)
                 };
 
-               
+
             } catch (error) {
                 setTimeout(() => {
                     console.error("Erro ao carregar os dados:", error);
-                const showAlert = document.getElementById('alert-modal-box')
-                const alertTitle = document.getElementById('alert-title')
-                const alertParagraph = document.getElementById('alert-textp')
-                const alertStatus = document.getElementById('alert-status')
-                const alertClose = document.getElementById('btn-confirm-alert')
-                showAlert.style.display = 'flex';
-                alertTitle.innerHTML = 'Viishh...'
-                alertStatus.style.color = 'red'
-                alertStatus.innerHTML = ('<font color="gray">Status</font> <br>' + error);
-                alertParagraph.innerHTML = ('Não conseguimos carregar os dados dos clientes para você :( <br>');
-                alertClose.addEventListener('click', function () {
-                    showAlert.style.display = 'none';
-                })
-                }, 3500); 
+                    const showAlert = document.getElementById('alert-modal-box')
+                    const alertTitle = document.getElementById('alert-title')
+                    const alertParagraph = document.getElementById('alert-textp')
+                    const alertStatus = document.getElementById('alert-status')
+                    const alertClose = document.getElementById('btn-confirm-alert')
+                    showAlert.style.display = 'flex';
+                    alertTitle.innerHTML = 'Viishh...'
+                    alertStatus.style.color = 'red'
+                    alertStatus.innerHTML = ('<font color="gray">Status</font> <br>' + error);
+                    alertParagraph.innerHTML = ('Não conseguimos carregar os dados dos clientes para você :( <br>');
+                    alertClose.addEventListener('click', function () {
+                        showAlert.style.display = 'none';
+                    })
+                }, 3500);
             }
         };
 
-        if (user) {
-            setUserColor(getOrCreateUserColor(user.email || user.id || "default"));
+        if (userOn) {
+            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
         }
 
         carregarScripts();
@@ -205,7 +232,7 @@ function Clients() {
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>
                         <h1 className='dashboard-title'>Clientes</h1>
-                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são os dados dos clientes.</p>
+                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são os dados dos clientes.</p>
                     </div>
 
                     <div className='dashboard-content-container-clients'>

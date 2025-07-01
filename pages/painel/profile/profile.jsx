@@ -11,7 +11,27 @@ import MenuAutSuporte from '../../../components/MenuAutSuporte';
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(null);
+
+  const userOn = JSON.parse(localStorage.getItem("user"));
+
+  // Basta passar o token JWT para esta função
+  function parseJwt(token) {
+    if (!token) return null;
+    const base64Url = token.split('.')[1];
+    if (!base64Url) return null;
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  }
+  const token = userOn?.token;
+  const payload = parseJwt(token);
+
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -21,10 +41,19 @@ const Profile = () => {
   function getOrCreateUserColor(userId) {
     // Use o id do usuário como chave, se houver
     const key = `userColor_${userId}`;
-    let color = localStorage.getItem(key);
+    let color = localStorage.getItem(token ? `userColor_${token}` : key);
     if (!color) {
       color = getRandomColor();
       localStorage.setItem(key, color);
+    }
+    return color;
+  }
+
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
   }
@@ -38,11 +67,15 @@ const Profile = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  function handleCloseMenu() {
+    setIsMenuOpen(false);
+  }
+
   function menuSwitch() {
     setIsMenuOpen((prev) => !prev);
   }
 
-  if (!user) {
+  if (!userOn) {
     return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
       <p>Usuário não encontrado. Por favor, faça login novamente.</p>
 
@@ -54,8 +87,8 @@ const Profile = () => {
     document.title = "AutSuporte - Perfil";
 
     // Defina a cor do usuário ao montar o componente
-    if (user) {
-      setUserColor(getOrCreateUserColor(user.email || user.id || "default"));
+    if (userOn) {
+      setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
     }
 
     const timer = setTimeout(() => {
@@ -106,12 +139,12 @@ const Profile = () => {
       </div>
 
       <div className="dashboard-flex-wrapper">
-      <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} />
+        <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
 
         <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
           <div className='dashboard-header'>
             <h1 className='dashboard-title'>Meu Perfil</h1>
-            <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são seus dados e informações.</p>
+            <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são seus dados e informações.</p>
           </div>
 
           <div className='dashboard-content-container'>
@@ -119,8 +152,8 @@ const Profile = () => {
               <div className='user-info-container'>
                 <div className='user-image-container'>
                   <img src="" alt="" srcset="" />
-                  {user.image ? (
-                    <img src={user.image} alt="Foto do usuário" className='user-image' id='user-image' width={80} height={80} />
+                  {payload.image ? (
+                    <img src={payload.image} alt="Foto do usuário" className='user-image' id='user-image' width={80} height={80} />
                   ) : (
                     <div
                       className='user-initial'
@@ -137,14 +170,14 @@ const Profile = () => {
                         color: '#fff'
                       }}
                     >
-                      {user.name ? user.name.charAt(0).toUpperCase() : '?'}
+                      {payload.username ? payload.username.charAt(0).toUpperCase() : '?'}
                     </div>
                   )}
                 </div>
                 <div className='user-details'>
-                  <h2 className='user-name'>{user.name} {user.surname}</h2>
-                  <p className='user-email'>{user.email}</p>
-                  
+                  <h2 className='user-name'>{payload.username}</h2>
+                  <p className='user-email'>{payload.email}</p>
+
 
                   <Link to="/profile/edit">
                     <button className='btn-edit-profile'>Editar Perfil</button>
@@ -158,18 +191,18 @@ const Profile = () => {
 
                     <div>
                       <label htmlFor="user-name" className='info-label'>Nome Completo:</label>
-                      <p>{user.name} {user.surname}</p>
+                      <p>{payload.username}</p>
 
                       <label htmlFor="user-email" className='info-label'>E-mail:</label>
-                      <p>{user.email}</p>
+                      <p>{payload.email}</p>
                     </div>
 
                     <div>
                       <label htmlFor="user-phone" className='info-label'>Telefone:</label>
-                      <p>{user.phone}</p>
+                      <p>{payload.phone}</p>
 
                       <label htmlFor="user-birthDate" className='info-label'>Data de Nascimento:</label>
-                      <p>{user.birthdate}</p>
+                      <p>{payload.birthdate}</p>
                     </div>
 
                   </div>
@@ -180,24 +213,24 @@ const Profile = () => {
                   <div className='user-info-grid'>
                     <div>
                       <label htmlFor="user-address" className='info-label'>Logradouro:</label>
-                      <p>{user.address}</p>
+                      <p>{payload.address}</p>
 
                       <label htmlFor="user-cep" className='info-label'>CEP:</label>
-                      <p>{user.cep}</p>
+                      <p>{payload.cep}</p>
 
                       <label htmlFor="user-number" className='info-label'>Número:</label>
-                      <p>{user.number}</p>
+                      <p>{payload.number}</p>
 
                       <label htmlFor="user-complement" className='info-label'>Complemento:</label>
-                      <p>{user.complement}</p>
+                      <p>{payload.complement}</p>
                     </div>
 
                     <div>
                       <label htmlFor="user-city" className='info-label'>Cidade:</label>
-                      <p>{user.city}</p>
+                      <p>{payload.city}</p>
 
                       <label htmlFor="user-state" className='info-label'>Estado:</label>
-                      <p>{user.state}</p>
+                      <p>{payload.state}</p>
                     </div>
                   </div>
                 </div>

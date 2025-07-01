@@ -12,6 +12,24 @@ const EditProfile = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
+    const userOn = JSON.parse(localStorage.getItem("user"));
+
+    // Basta passar o token JWT para esta função
+    function parseJwt(token) {
+        if (!token) return null;
+        const base64Url = token.split('.')[1];
+        if (!base64Url) return null;
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    }
+    const token = userOn?.token;
+    const payload = parseJwt(token);
 
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -21,10 +39,19 @@ const EditProfile = () => {
     function getOrCreateUserColor(userId) {
         // Use o id do usuário como chave, se houver
         const key = `userColor_${userId}`;
-        let color = localStorage.getItem(key);
+        let color = localStorage.getItem(token ? `userColor_${token}` : key);
         if (!color) {
             color = getRandomColor();
             localStorage.setItem(key, color);
+        }
+        return color;
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
     }
@@ -37,6 +64,10 @@ const EditProfile = () => {
     }
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    function handleCloseMenu() {
+    setIsMenuOpen(false);
+  }
 
     function menuSwitch() {
         setIsMenuOpen((prev) => !prev);
@@ -66,8 +97,8 @@ const EditProfile = () => {
     useEffect(() => {
         document.title = "AutSuporte - Editar Perfil";
 
-        if (user) {
-            setUserColor(getOrCreateUserColor(user.email || user.id || "default"));
+        if (userOn) {
+            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
         }
 
 
@@ -158,12 +189,12 @@ const EditProfile = () => {
             </div>
 
             <div className="dashboard-flex-wrapper">
-            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} />
+                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>
                         <h1 className='dashboard-title'>Editar Perfil</h1>
-                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{user.name},</font> esses são seus dados e informações.</p>
+                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são seus dados e informações.</p>
                     </div>
 
                     <div className='dashboard-content-container'>
@@ -171,8 +202,8 @@ const EditProfile = () => {
                             <div className='user-info-container'>
                                 <div className='user-image-container'>
                                     <img src="" alt="" srcset="" />
-                                    {user.image ? (
-                                        <img src={user.image} alt="Foto do usuário" className='user-image' id='user-image' width={80} height={80} />
+                                    {payload.image ? (
+                                        <img src={payload.image} alt="Foto do usuário" className='user-image' id='user-image' width={80} height={80} />
                                     ) : (
                                         <div
                                             className='user-initial'
@@ -194,8 +225,8 @@ const EditProfile = () => {
                                     )}
                                 </div>
                                 <div className='user-details'>
-                                    <h2 className='user-name'>{user.name} {user.surname}</h2>
-                                    <p className='user-email'>{user.email}</p>
+                                    <h2 className='user-name'>{payload.username} {payload.surname}</h2>
+                                    <p className='user-email'>{payload.email}</p>
 
                                 </div>
                             </div>
