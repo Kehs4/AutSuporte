@@ -80,19 +80,16 @@ async function saveDataClients(req, res){
         const inputs = document.querySelectorAll('.btns')
 
         
-        const proxy = 'https://cors-anywhere.herokuapp.com/';
-        const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
-        const fullUrl = proxy + url;
-        //const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
-        
-        
-        const response = await fetch(fullUrl, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-                body: JSON.stringify({nome_cliente, cod_unid_neg, cod_unid_oper, versao_vertis_cliente, data_atualizado, sql_cliente, cod_cliente, tipo_unidade, observacao, ind_auditoria, acesso_cliente_teamviewer, senha_acesso_cliente_teamviewer, acesso_cliente_anydesk, senha_acesso_cliente_anydesk, usuario_acesso_cliente, senha_acesso_usuario, alternativo, ip_servidor_cliente, senha_criptografada, porta_bd, so_server, postgres_versao, contatos, email_cliente, ddd_telefone, telefone1, telefone2, licencas_cliente, dth_manutencao_realizada, dth_manutencao_futura, ind_script, manutencao_backup, antivirus_cliente, ind_banco_boleto, cliente_municipio, ind_sat, ind_lol, ind_loe, ind_gerador_pdf, ind_faturamento_email, ind_portal_novo, ind_contigencia, ind_solic_exam_portal, ibt_calculo_correto, ind_emite_nfs_api, ind_publ_s3, ind_itf_m, manutencao_armazenamento, conta_nuvem_backup, senha_conta_nuvem, tipo_backup_nuvem, pin_google_desktop, tamanho_backup, horario_backups, horario_vacuum, horarios_reindex, senha_smartvertis, ind_qrcode}),
+        const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Basic',
+                    },
+                        body: JSON.stringify({nome_cliente, cod_unid_neg, cod_unid_oper, versao_vertis_cliente, data_atualizado, sql_cliente, cod_cliente, tipo_unidade, observacao, ind_auditoria, acesso_cliente_teamviewer, senha_acesso_cliente_teamviewer, acesso_cliente_anydesk, senha_acesso_cliente_anydesk, usuario_acesso_cliente, senha_acesso_usuario, alternativo, ip_servidor_cliente, senha_criptografada, porta_bd, so_server, postgres_versao, contatos, email_cliente, ddd_telefone, telefone1, telefone2, licencas_cliente, dth_manutencao_realizada, dth_manutencao_futura, ind_script, manutencao_backup, antivirus_cliente, ind_banco_boleto, cliente_municipio, ind_sat, ind_lol, ind_loe, ind_gerador_pdf, ind_faturamento_email, ind_portal_novo, ind_contigencia, ind_solic_exam_portal, ibt_calculo_correto, ind_emite_nfs_api, ind_publ_s3, ind_itf_m, manutencao_armazenamento, conta_nuvem_backup, senha_conta_nuvem, tipo_backup_nuvem, pin_google_desktop, tamanho_backup, horario_backups, horario_vacuum, horarios_reindex, senha_smartvertis, ind_qrcode}),
         });
+       
     
             if (response.ok) {
                 const result = await response.text();

@@ -89,12 +89,14 @@ function ClientsData() {
         const fetchData = async () => {
             if (cod_cliente) {
                 try {
-                    const proxy = 'https://cors-anywhere.herokuapp.com/';
-                    const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
-                    const fullUrl = proxy + url;
-
-                    const response = await fetch(fullUrl + `/${cod_cliente}`);
-                    //const response = await fetch(`http://localhost:3000/clientes/id=${cod_cliente}`);
+                    const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat' + `/${cod_cliente}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Basic',},
+                    
+            })
 
                     const data = await response.json();
                     document.title = "AutSuporte -  " + data[0].nome_cliente;

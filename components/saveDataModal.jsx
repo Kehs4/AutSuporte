@@ -32,18 +32,16 @@ async function saveData(req, res) {
     const alertClose = document.getElementById('btn-confirm-alert')
 
     // Endpoint retornando os dados das informações dos clientes PostgreSQL.
-    const proxy = 'https://cors-anywhere.herokuapp.com/';
-    const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
-    const fullUrl = proxy + url;
-
-
     try {
-        const response = await fetch(fullUrl, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({nome_cliente, cod_unid_neg, cod_unid_oper, versao_vertis_cliente, dth_manutencao_realizada, dth_manutencao_futura, licencas_cliente, acesso_cliente_teamviewer, senha_acesso_cliente_teamviewer, acesso_cliente_anydesk, senha_acesso_cliente_anydesk, ip_servidor_cliente, alternativo, usuario_acesso_cliente, senha_acesso_usuario, senha_criptografada, contatos, email_cliente, ddd_telefone, telefone1, telefone2, observacao, cod_cliente}),
+
+        const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Basic',
+                    },
+                        body: JSON.stringify({nome_cliente, cod_unid_neg, cod_unid_oper, versao_vertis_cliente, dth_manutencao_realizada, dth_manutencao_futura, licencas_cliente, acesso_cliente_teamviewer, senha_acesso_cliente_teamviewer, acesso_cliente_anydesk, senha_acesso_cliente_anydesk, ip_servidor_cliente, alternativo, usuario_acesso_cliente, senha_acesso_usuario, senha_criptografada, contatos, email_cliente, ddd_telefone, telefone1, telefone2, observacao, cod_cliente}),
         });
 
         if (response.ok) {

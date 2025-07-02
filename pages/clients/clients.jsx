@@ -81,12 +81,17 @@ function Clients() {
     }
 
     async function fetchClienteById(cod_cliente) {
-        const proxy = 'https://cors-anywhere.herokuapp.com/';
-        const url = `http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat/${cod_cliente}`;
-        const fullUrl = proxy + url;
 
         try {
-            const response = await fetch(fullUrl);
+            const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat/' + cod_cliente, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Basic',},
+                    
+            })
+
             const cliente = await response.json();
             if (response.ok) {
                 setSelectedClient(Array.isArray(cliente) ? cliente[0] : cliente);
@@ -114,18 +119,22 @@ function Clients() {
         document.title = "AutSuporte - Clientes";
 
         const carregarScripts = async () => {
-            const proxy = 'https://cors-anywhere.herokuapp.com/';
-            const url = 'http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat';
-            const fullUrl = proxy + url;
 
             try {
-                const response = await fetch(fullUrl)
+                const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Basic',},
+                    
+            })
+    
                 const data = await response.json();
 
                 if (response.ok) {
                     setClientspl(data)
                 };
-
 
             } catch (error) {
                 setTimeout(() => {
