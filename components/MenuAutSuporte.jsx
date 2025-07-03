@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import GppMaybeIcon from '@mui/icons-material/Api';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import LockClockIcon from '@mui/icons-material/LockClock';
 
 const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
   // Carrega o usuário do localStorage ao montar o componente
@@ -140,6 +141,14 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
           <div className='menu-options-hover'>
             <ManageAccountsIcon style={{ fontSize: '15px' }} />
             <Link to='/maintenance'><p>Manutenção Mensal</p></Link>
+          </div>
+
+        </div>
+
+        <div className='menu-options-verifylocks'>
+          <div className='menu-options-hover'>
+            <LockClockIcon style={{ fontSize: '15px' }} />
+            <Link to='/verifylocks'><p>Verificar Locks</p></Link>
           </div>
 
         </div>

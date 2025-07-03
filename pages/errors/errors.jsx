@@ -81,6 +81,25 @@ const Errors = () => {
         setIsMenuOpen(false);
     }
 
+    async function fetchErrors() {
+            try {
+                const response = await fetch("http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/dados_itg/211/1");
+                const data = await response.json();
+                console.log(data);
+
+                setErrors(Array.isArray(data) ? data : (data.ultimos_logs || []));
+            } catch (erro) {
+                console.error("Erro ao buscar dados da API:", erro);
+            }
+        }
+
+
+    function refreshApis() {
+       fetchErrors();
+        setTimeout(() =>  1000); // Pequeno delay para UX
+    }
+    
+
     if (!user) {
         return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
             <p>Usuário não encontrado. Por favor, faça login novamente.</p>
@@ -92,17 +111,7 @@ const Errors = () => {
     useEffect(() => {
         document.title = "AutSuporte - Logs de Erros";
 
-        async function fetchErrors() {
-            try {
-                const response = await fetch("http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/dados_itg/211/1");
-                const data = await response.json();
-                console.log(data);
-
-                setErrors(Array.isArray(data) ? data : (data.ultimos_logs || []));
-            } catch (erro) {
-                console.error("Erro ao buscar dados da API:", erro);
-            }
-        }
+        
 
         // Defina a cor do usuário ao montar o componente
         if (userOn) {
@@ -123,7 +132,7 @@ const Errors = () => {
         return <Loading />;
     }
 
-
+    
 
     // Filtra os erros conforme select e busca
     const filteredErrors = Array.isArray(errors) && errors
@@ -208,6 +217,7 @@ const Errors = () => {
                                         onChange={e => setSearchTerm(e.target.value)}
                                     />
                                 </div>
+                                
 
                                 <div className='dashboard-errors-countrow'>
                                     <select
@@ -222,6 +232,14 @@ const Errors = () => {
                                         <option value="100">100</option>
                                     </select>
                                 </div>
+
+                                <button
+                                        className='button-refresh'
+                                        onClick={refreshApis}
+                                        style={{marginLeft: '2rem'}}
+                                    >
+                                        Atualizar Status das API's
+                                    </button>
 
                                 <div className="table-pagination">
                                     <button
@@ -277,6 +295,8 @@ const Errors = () => {
                                         {totalErrorsAPI}
                                     </p>
                                 </div>
+
+                                
                             </div>
 
                             <div>

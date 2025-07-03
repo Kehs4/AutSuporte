@@ -192,6 +192,7 @@ function Maintenance() {
                                             <h1>Manutenções Realizadas</h1>
                                         </div>
                                         <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            2
                                         </p>
                                     </div>
 
@@ -201,6 +202,7 @@ function Maintenance() {
                                             <h1>Manutenções não Realizadas</h1>
                                         </div>
                                         <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            1
                                         </p>
                                     </div>
                                 </div>
@@ -223,7 +225,7 @@ function Maintenance() {
 
                                                     <h4 style={{ marginTop: '1rem', color: '#04204b' }}>Informações do Servidor</h4>
                                                     <p className='maintenance-server-info'>Nome do Servidor: Servidor A</p>
-                                                    <p className='maintenance-server-info'>IP do Servidor: 192.168</p>
+                                                    <p className='maintenance-server-info'>IP do Servidor: 192.168.0.150</p>
                                                     <p className='maintenance-server-info'>Sistema Operacional: Windows Server 2019</p>
                                                     <p className='maintenance-server-info'>Versão do Postgres: 9.0.23</p>
                                                     <p className='maintenance-server-info'>Antivírus: Karpesky</p>
@@ -260,6 +262,7 @@ function Maintenance() {
                                     <table className='table-maintenance'>
                                         <thead className='table-maintenance-head'>
                                             <tr>
+                                                <th>ID</th>
                                                 <th>Cliente</th>
                                                 <th>Data da Manutenção</th>
                                                 <th>Status</th>
@@ -267,16 +270,19 @@ function Maintenance() {
                                         </thead>
                                         <tbody className='table-body'>
                                             <tr onDoubleClick={() => handleRowDoubleClick('Cliente A')}>
+                                                <td>1</td>
                                                 <td>Cliente A</td>
                                                 <td>01/01/2023</td>
                                                 <td>Realizada</td>
                                             </tr>
                                             <tr onDoubleClick={() => handleRowDoubleClick('Cliente B')}>
+                                                <td>2</td>
                                                 <td>Cliente B</td>
                                                 <td>02/01/2023</td>
                                                 <td>Não Realizada</td>
                                             </tr>
                                             <tr onDoubleClick={() => handleRowDoubleClick('Cliente C')}>
+                                                <td>3</td>
                                                 <td>Cliente C</td>
                                                 <td>03/01/2023</td>
                                                 <td>Realizada</td>
