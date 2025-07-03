@@ -67,7 +67,7 @@ function Maintenance() {
     }
 
     useEffect(() => {
-        document.title = "AutSuporte - Dashboard";
+        document.title = "AutSuporte - Manutenção Mensal";
 
         // Recupera os dados do usuário do localStorage
         const storedUser = localStorage.getItem('user');

@@ -11,7 +11,7 @@ import Clients from './clients/clients';
 import ClientsData from './clients/clientsData/clientsData';
 import ApiLogs from './apilogs/apilogs';
 import Maintenance from './maintenance/maintenance';
-import verifyLocks from './verifylocks/verifylocks';
+import VerifyLocks from './verifylocks/verifylocks';
 
 const AppRoutes = () => {
   return (
@@ -29,7 +29,7 @@ const AppRoutes = () => {
         <Route path='/clients' element={<ClientsData />} />
         <Route path='/apilogs' element={<ApiLogs />} />
         <Route path='/maintenance' element={<Maintenance />} />
-        <Route path='/verifylocks' element={<verifyLocks />} />
+        <Route path='/verifylocks' element={<VerifyLocks />} />
       </Routes>
   );
 };

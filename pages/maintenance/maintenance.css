@@ -9,6 +9,7 @@
     flex-direction: column;
     width: 90%;
     border-collapse: collapse;
+    cursor: pointer;
 }
 
 .table-maintenance-head {
