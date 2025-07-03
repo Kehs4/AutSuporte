@@ -291,7 +291,7 @@ function ApiLogs() {
                                         onClick={refreshAllApis}
                                         style={{marginLeft: '2rem'}}
                                     >
-                                        Atualizar APIs
+                                        Atualizar Status das API's
                                     </button>
                                 </div>
 

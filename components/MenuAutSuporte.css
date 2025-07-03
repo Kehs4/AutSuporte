@@ -87,7 +87,9 @@
   .menu-options-dashboard,
   .menu-options-licences,
   .menu-options-errors,
-  .menu-options-clients{
+  .menu-options-clients,
+  .menu-options-apilogs,
+  .menu-options-maintenance{
     display: flex;
     font-size: 1rem;
     line-height: 2rem;
@@ -101,7 +103,9 @@
   .menu-options-dashboard:hover,
   .menu-options-licences:hover,
   .menu-options-errors:hover,
-  .menu-options-clients:hover {
+  .menu-options-clients:hover,
+  .menu-options-apilogs:hover,
+  .menu-options-maintenance:hover {
     background-color: #ebebeb;
     outline: 1px solid #e4e4e4;
     color: rgb(0, 0, 0);
