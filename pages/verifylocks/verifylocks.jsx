@@ -188,37 +188,39 @@ function VerifyLocks() {
                                     </select>
                                 </div>
 
-                                <div className='dashboard-content-verifylocks-body'>
-                                    <h3 className='dashboard-content-verifylocks-title'>
-                                        Cliente Selecionado: <font color='blue'>{clientDetails?.nome_cliente}</font>
-                                    </h3>
-                                    <div>
-                                        <h4 style={{textAlign: 'center', fontSize: '20px', fontWeight: '400'}} className='dashboard-content-verifylocks-text'>Dados do Cliente</h4>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            Código do Cliente: {clientDetails?.cod_cliente || ''}
-                                        </p>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            Banco de Dados do Cliente: PostgreSQL
-                                        </p>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            IP do Servidor: {clientDetails?.ip_servidor_cliente || ''}
-                                        </p>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            Porta do Servidor: {clientDetails?.porta_bd || ''}
-                                        </p>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            Usuário do Banco de Dados: {clientDetails?.usuario_acesso_cliente || ''}
-                                        </p>
-                                        <p className='dashboard-content-verifylocks-text'>
-                                            Senha do Banco de Dados: {clientDetails?.senha_criptografada || ''}
-                                        </p>
-                                    </div>
+                                {clientDetails && (
+                                    <div className='dashboard-content-verifylocks-body'>
+                                        <h3 className='dashboard-content-verifylocks-title'>
+                                            Cliente Selecionado: <font color='blue'>{clientDetails?.nome_cliente}</font>
+                                        </h3>
+                                        <div>
+                                            <h4 style={{textAlign: 'center', fontSize: '20px', fontWeight: '400'}} className='dashboard-content-verifylocks-text'>Dados do Cliente</h4>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                Código do Cliente: {clientDetails?.cod_cliente || ''}
+                                            </p>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                Banco de Dados do Cliente: PostgreSQL
+                                            </p>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                IP do Servidor: {clientDetails?.ip_servidor_cliente || ''}
+                                            </p>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                Porta do Servidor: {clientDetails?.porta_bd || ''}
+                                            </p>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                Usuário do Banco de Dados: {clientDetails?.usuario_acesso_cliente || ''}
+                                            </p>
+                                            <p className='dashboard-content-verifylocks-text'>
+                                                Senha do Banco de Dados: {clientDetails?.senha_criptografada || ''}
+                                            </p>
+                                        </div>
 
-                                    <div>
-                                        <p className='dashboard-content-verifylocks-text'>Clique no botão abaixo para verificar os locks do cliente selecionado.</p>
-                                        <button className='btn-verify-locks' onClick={() => alert('Verificando locks...')}>Verificar Locks</button>
+                                        <div>
+                                            <p className='dashboard-content-verifylocks-text'>Clique no botão abaixo para verificar os locks do cliente selecionado.</p>
+                                            <button className='btn-verify-locks' onClick={() => alert('Verificando locks...')}>Verificar Locks</button>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
 
                         </div>
