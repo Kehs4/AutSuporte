@@ -10,6 +10,7 @@ import Errors from './errors/errors';
 import Clients from './clients/clients';
 import ClientsData from './clients/clientsData/clientsData';
 import ApiLogs from './apilogs/apilogs';
+import Maintenance from './maintenance/maintenance';
 
 const AppRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         <Route path='/clientstb' element={<Clients />} />
         <Route path='/clients' element={<ClientsData />} />
         <Route path='/apilogs' element={<ApiLogs />} />
+        <Route path='/maintenance' element={<Maintenance />} />
       </Routes>
   );
 };
