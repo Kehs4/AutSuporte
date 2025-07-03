@@ -36,16 +36,16 @@ const EditProfile = () => {
     const [userColor, setUserColor] = useState('');
 
     // Função para obter ou gerar cor persistente
-    function getOrCreateUserColor(userId) {
-        // Use o id do usuário como chave, se houver
-        const key = `userColor_${userId}`;
-        let color = localStorage.getItem(token ? `userColor_${token}` : key);
-        if (!color) {
-            color = getRandomColor();
-            localStorage.setItem(key, color);
-        }
-        return color;
+  function getOrCreateUserColor(userId) {
+    // Use o id do usuário como chave, se houver
+    const token = `userColor_${userId}`;
+    let color = localStorage.getItem(token ? `userColor_${userId}` : token);
+    if (!color) {
+      color = getRandomColor();
+      localStorage.setItem(token, color);
     }
+    return color;
+  }
 
     function getRandomColor() {
         const letters = '0123456789ABCDEF';

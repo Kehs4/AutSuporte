@@ -43,11 +43,11 @@ function ClientsData() {
     // Função para obter ou gerar cor persistente
     function getOrCreateUserColor(userId) {
         // Use o id do usuário como chave, se houver
-        const key = `userColor_${userId}`;
-        let color = localStorage.getItem(token ? `userColor_${token}` : key);
+        const token = `userColor_${userId}`;
+        let color = localStorage.getItem(token ? `userColor_${userId}` : token);
         if (!color) {
             color = getRandomColor();
-            localStorage.setItem(key, color);
+            localStorage.setItem(token, color);
         }
         return color;
     }
@@ -90,13 +90,14 @@ function ClientsData() {
             if (cod_cliente) {
                 try {
                     const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat' + `/${cod_cliente}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Basic',},
-                    
-            })
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': 'Basic',
+                        },
+
+                    })
 
                     const data = await response.json();
                     document.title = "AutSuporte -  " + data[0].nome_cliente;

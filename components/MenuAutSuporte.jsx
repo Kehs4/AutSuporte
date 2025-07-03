@@ -65,7 +65,7 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
               margin: '0 15px'
             }}
           >
-            {user.name ? user.name.charAt(0).toUpperCase() : '?'}
+            {payload.username ? payload.username.charAt(0).toUpperCase() : '?'}
           </div>
         )}
         <h1 className='menu-user-name'>{payload.username || payload.token || 'Usuário'}</h1>
