@@ -6,7 +6,7 @@
 }
 
 .test {
-    background-color: var(--text-color);
+    background-color: rgb(16, 19, 24)
 }
 
 #client-ddd {
@@ -17,7 +17,7 @@
     width: 250px;
 }
 
-.search-clients-info {  
+.search-clients-info {
     display: flex;
     width: fit-content;
     margin: auto;
@@ -25,14 +25,16 @@
     justify-content: center;
     flex-direction: column;
     margin-top: 30px;
+    
     label {
         display: flex;
         padding: 5px;
         color: var(--primary-color);
-        font-weight: 200;
-        text-shadow: 0px 0px 2px rgba(192, 192, 192, 0.555);
+        font-weight: 300;
+        text-shadow: 0px 0px 2px rgba(226, 193, 86, 0.555);
     }
-    input {  
+
+    input {
         height: 30px;
         width: 250px;
         padding: 15px;
@@ -45,6 +47,7 @@
         color: rgb(255, 255, 255);
         background-color: #1f1f1f;
     }
+
     input:disabled {
         color: rgba(204, 216, 233, 0.877);
         border: 1px solid rgb(49, 49, 49);
@@ -52,6 +55,7 @@
         cursor: not-allowed;
         outline: 1px solid rgb(36, 44, 54);
     }
+
     input:focus {
         border: 1px solid rgb(255, 145, 0);
         color: white;
@@ -60,6 +64,7 @@
         border-right: none;
         transition: 0.5s all;
     }
+
     legend {
         margin: auto;
         box-shadow: 0px 4px 5px -5px rgb(255, 145, 0);
@@ -70,8 +75,9 @@
         background-color: var(--primary-color);
         color: rgb(255, 255, 255);
         font-weight: 200;
-        text-shadow: 1px 2px 3px rgba(165, 125, 88, 0.767);
+        text-shadow: 1px 2px 3px rgba(12, 8, 4, 0.767);
     }
+
     fieldset {
         display: flex;
         justify-content: center;
@@ -81,10 +87,8 @@
         border: 1px groove;
         border-radius: 15px;
         margin-bottom: 50px;
-        background-color: rgba(17, 17, 17, 0.411);
-        border-top: solid;
-        border-bottom: none;
-        border-color: var(--primary-color);
+        background-color: rgba(16, 19, 24, 0.925);
+        box-shadow: 0px 5px 10px -5px rgb(255, 255, 255);
     }
 }
 
@@ -142,8 +146,8 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .btn-update-clients {
@@ -187,7 +191,7 @@ input::-webkit-inner-spin-button {
 .input-erro {
     border: 2px solid red !important;
     background-color: #ffeaea;
-  }
+}
 
 
 .alert-modal-box {
@@ -287,4 +291,3 @@ input::-webkit-inner-spin-button {
     border: 1px solid #94b5d346;
     border-radius: 8px;
 }
-
