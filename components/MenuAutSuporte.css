@@ -34,7 +34,6 @@
     margin-right: 30px;
     padding: 3px 10px;
     background-color: #04204b;
-
     color: rgb(255, 255, 255);
   }
   
@@ -49,11 +48,13 @@
     margin: auto;
     color: black;
     margin-top: 40px;
+    
   }
   
   .user-initial {
     text-transform: uppercase;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 1px 15px rgba(157, 157, 158, 0.932);
   }
   
   .user-image {
@@ -62,9 +63,15 @@
   }
   
   .menu-user-name {
-    font-size: 15px;
-    font-weight: 300;
-    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+  }
+
+  .menu-user-profile-class {
+    font-size: 11px;
+    color: #003cff;
+    margin-left: 5px;
   }
   
   .menu-options-box {

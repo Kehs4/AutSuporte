@@ -46,11 +46,12 @@ a {
     border-radius: 8px;
     transition: background-color 0.3s ease;
     border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.719);
   }
   
   .autsuporte-header-options:hover {
     cursor: pointer;
-    background-color: var(--secondary-color);
+    background-color: #043580;
     transition: background-color 0.3s ease;
   }
 

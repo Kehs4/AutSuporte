@@ -28,6 +28,15 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
   // Exemplo de uso:
   const payload = parseJwt(token);
   console.log(payload);
+  const [devMode, setDevMode] = useState('');
+
+  useEffect(() => {
+    if (payload && payload.DEV_MODE === "S") {
+      setDevMode('Desenvolvedor');
+    } else {
+      setDevMode('');
+    }
+  }, [payload]);
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -51,28 +60,32 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
     <div className={`menu-autsuporte${isMenuOpen ? ' open' : ''}`} id='menu-autsuporte'>
       <div className='menu-autsuporte-user'>
         {user.image ? (
-          <img src={user.image} alt="Foto do usuário" className='user-image' id='user-image' width={40} height={40} />
+          <img src={user.image} alt="Foto do usuário" className='user-image' id='user-image' width={50} height={50} />
         ) : (
           <div
             className='user-initial'
             style={{
               backgroundColor: userColor,
-              width: '40px',
-              height: '40px',
+              width: '50px',
+              height: '50px',
               borderRadius: '50%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              fontSize: '18px',
+              fontSize: '23px',
               fontWeight: 'bold',
               color: '#fff',
-              margin: '0 15px'
+              margin: '0 15px',
+              textShadow: '2.5px 2px 0px rgba(19, 19, 19, 0.45)',
             }}
           >
             {payload.username ? payload.username.charAt(0).toUpperCase() : '?'}
           </div>
         )}
-        <h1 className='menu-user-name'>{payload.username || payload.token || 'Usuário'}</h1>
+        <div style={{ marginTop: '5px' }}>
+          <h1 className='menu-user-name'>{payload.username || payload.token || 'Usuário'}</h1>
+          <p className='menu-user-profile-class'>{devMode}</p>
+        </div>
       </div>
 
       <div className='menu-options-box'>
