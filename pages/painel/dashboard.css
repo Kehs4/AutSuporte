@@ -64,42 +64,239 @@ html {
 
 .dashboard-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: start;
   justify-content: space-around;
-  width: 100%;
-  margin-top: 20px;
+  padding: 20px;
+  gap: 20px;
 }
 
+.dashboard-informations {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
 
 .add-informations-content {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   flex-direction: column;
-  width: 300px;
-  height: 350px;
-  margin-top: 8px;
-  border: 1px solid #ccc;
-  border-left: none;
-  box-shadow: 3px 5px 0px 0px #c0c0c0 ;
-  border-radius: 5px;
+  border: 1px solid #ccccccaf;
+  min-width: 400px;
+  min-height: 150px;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.add-informations-content:hover {
+  box-shadow: 0 0 10px 1px rgba(63, 63, 63, 0.274);
+  transition: box-shadow 0.3s ease;
+  transform: scale(1.009);
 }
 
 .dashboard-section-title {
-  text-align: center;
-  font-size: 25px;
-  font-weight: 400;
-  color: #303030;
-  text-shadow: #3f8cff6c 1px 1px 5px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666c7e;
+  align-self: flex-start;
 }
 
 .dashboard-informations-text {
   font-weight: 300;
   font-size: 18px;
   color: black;
-  text-shadow: #00000033 1px 1px;
   margin-bottom: 8px;
+  margin-top: 8px;
+  text-align: start;
+  }
+
+.dashboard-infos-button {
+  background-color: #04204b;
+  color: white;
+  border: none;
+  align-self: flex-end;
+  padding: 5px 20px;
+  max-width: 150px;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
 }
+
+.dashboard-infos-button:hover {
+  cursor: pointer;
+  background-color: #043580;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-infos-status {
+  display: flex;
+  justify-content: center;
+  font-size: 10px;
+  padding: 3px;
+  color: #ffffff;
+  max-width: 150px;
+  background-color: #04204b;
+  border-radius: 30px;
+  box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
+}
+
+.dashboard-section-informations {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 1;
+  gap: 20px;
+}
+
+.dashboard-section-att {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.section-status-whomade {
+  align-items: center;
+  margin: auto;
+  padding: 3px 20px;
+  font-size: 12px;
+  min-width: 220px;
+  color: white;
+  background-color: #04204b;
+  border-radius: 10px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #04204b;
+  align-self: flex-start;
+}
+
+.dashboard-section-text {
+  font-weight: 300;
+  font-size: 18px;
+  width: 100%;
+  color: black;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  text-align: start;
+}
+
+.section-informations-content {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.section-status-date {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  align-self: flex-end;
+}
+
+.dashboard-section-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #ccccccaf;
+  border-radius: 10px;
+}
+
+.section-informations-content-profile {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.dashboard-section-quickactions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  border: 1px solid #ccccccaf;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.dashboard-quickaction-options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dashboard-quickaction-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 400px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccccccaf;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-quickaction-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.dashboard-quickaction-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.dashboard-quickaction-text {
+  font-size: 14px;
+  color: #000000;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.dashboard-quickaction-text-p{
+  font-size: 12px;
+  margin-top: 7px;
+  color: #666c7e;
+}
+
+.dashboard-quickaction-button {
+  background-color: #04204b;
+  color: white;
+  border: none;
+  padding: 8px 120px;
+  border-radius: 5px;
+  font-size: 13px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.dashboard-quickaction-button:hover {
+  cursor: pointer;
+  background-color: #043580;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-quickaction-icon-1 {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: 200;
+  font-size: 2rem;
+  justify-content: center;
+  background-color: #d6d6d6;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+
 

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Loading from '../../components/Loading';
 import MenuToggleProvider from '../../components/MenuToggleProvider';
 import MenuAutSuporte from '../../components/MenuAutSuporte';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 function Dashboard() {
 
@@ -122,18 +123,109 @@ function Dashboard() {
 
               <div className='dashboard-content'>
 
-                <div className='dashboard-add-informations'>
-                  <h2 className='dashboard-section-title'>Dados Cadastrais</h2>
-                  <div className='add-informations-content'>
-                    <h1 className='dashboard-informations-text'>Adicione seus dados e informações aqui!</h1>
-                    <Link to="/profile"><button className='autsuporte-header-options'>Meu Perfil</button></Link>
+                <div className='dashboard-informations'>
+                  <div className='dashboard-add-informations'>
+                    <div className='add-informations-content'>
+                      <h2 className='dashboard-section-title'>Chamados Abertos</h2>
+                      <h1 className='dashboard-informations-text' style={{ fontWeight: '700', fontSize: '25px' }}>{payload.chamados}42</h1>
+                      <p className='dashboard-infos-status' style={{ fontWeight: '600' }}>{payload.statuschamado}+8% nessa semana</p>
+                    </div>
+                  </div>
+
+                  <div className='dashboard-add-informations'>
+                    <div className='add-informations-content'>
+                      <h2 className='dashboard-section-title'>Tempo médio de Resolução</h2>
+                      <h1 className='dashboard-informations-text' style={{ fontWeight: '700', fontSize: '25px' }}>{payload.statusresolucao}1:30h</h1>
+                      <p className='dashboard-infos-status' style={{ fontWeight: '600' }}>{payload.statusresolucaoinfo}-15% nessa semana</p>
+                    </div>
+                  </div>
+
+                  <div className='dashboard-add-informations'>
+                    <div className='add-informations-content'>
+                      <h2 className='dashboard-section-title'>Clientes Ativos</h2>
+                      <h1 className='dashboard-informations-text' style={{ fontWeight: '700', fontSize: '25px' }}>{payload.statusresolucao}215</h1>
+                      <p className='dashboard-infos-status' style={{ fontWeight: '600' }}>{payload.statusresolucaoinfo}+3 nesse mês</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='dashboard-section-informations'>
+                  <div style={{ border: '1px solid #ccccccaf', borderRadius: '10px', padding: '20px', width: '80%' }}>
+                    <div className='dashboard-section-att'>
+
+                      <h2 className='section-title'>Atualizações do Sistema</h2>
+
+                      <div className='section-informations-content'>
+                        <p style={{ fontSize: '15px', fontWeight: 300, color: '#666c7e', alignSelf: 'flex-start', minWidth: '150px', marginTop: '10px', marginBottom: '8px' }}>10/07/2025 10:43</p>
+                        <h1 className='dashboard-section-text'>Vertis está atualizado na versão 2.9.62.2</h1>
+
+                        <div className='section-status-whomade'>
+                          <p>Atualizado por: {payload.username}</p>
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <div className='section-status-date' style={{ borderTop: '1px solid #ccccccaf', paddingTop: '10px', marginTop: '10px', width: '100%' }}>
+                      <p style={{ fontSize: '15px', fontWeight: 300, color: '#666c7e', alignSelf: 'flex-start' }}>
+                        Ultima atualização: Hoje às 10:43
+                      </p>
+                    </div>
+
+
+                  </div>
+
+                  <div className='dashboard-section-profile'>
+                    <div className='section-informations-content-profile'>
+                      <h2 className='section-title'>Dados Cadastrais</h2>
+                      <h1 className='dashboard-section-text'>Adicione ou edite seus dados e informações aqui!</h1>
+                      <button className='dashboard-infos-button'> <Link to="/profile">Meu Perfil</Link></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='dashboard-section-quickactions'>
+
+                  <h2 className='section-title'>Ações Rápidas</h2>
+
+                  <div className='dashboard-quickactions-content'>
+                      <div className='dashboard-quickaction-options'>
+                        <div className='dashboard-quickaction-item'>
+                          <div className='dashboard-quickaction-icon-1'>
+                            +
+                          </div>
+
+                          <div className='dashboard-quickaction-content'>
+                            <h2 className='dashboard-quickaction-text'>Novo Chamado</h2>
+                            <p className='dashboard-quickaction-text-p'>Registrar novo ticket de suporte.</p>
+                          </div>
+                          <Link to="/chamados">
+                            <button className='dashboard-quickaction-button'>Criar Chamado</button>
+                          </Link>
+                        </div>
+
+                        <div className='dashboard-quickaction-item'>
+                          <div className='dashboard-quickaction-icon'>
+                            <AssignmentIcon style={{ fontSize: '40px', color: '#04204b' }} />
+                          </div>
+
+                          <div className='dashboard-quickaction-content'>
+                            <h2 className='dashboard-quickaction-text'>Verificar Manutenções</h2>
+                            <p className='dashboard-quickaction-text-p'>Datas e horários de manutenções agendadas.</p>
+                          </div>
+                          <Link to="/chamados">
+                            <button className='dashboard-quickaction-button'>Visualizar</button>
+                          </Link>
+                        </div>
+                      </div>
                   </div>
                 </div>
 
               </div>
 
-
             </div>
+
           </div>
         </>
       )}
