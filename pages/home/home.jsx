@@ -5,9 +5,17 @@ import './home.css';
 
 function Home() {
 
+    const bgText = document.getElementById('bgText');
+
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      bgText.style.maskImage = `radial-gradient(circle 200px at ${x}px ${y}px, white 0%, transparent 100%)`;
+      bgText.style.webkitMaskImage = `radial-gradient(circle 200px at ${x}px ${y}px, white 0%, transparent 100%)`;
+    });
 
     return <>
-
+    
         <div className='autsuporte-container-dashboard'>
 
             <div className='autsuporte-header'>
@@ -25,6 +33,15 @@ function Home() {
                 <p className='home-description'>Sua plataforma de suporte técnico personalizada da Vertis.</p>
             </div>
         </div>
+    <div class="bg-text" id="bgText">
+    VERTIS VERTIS VERTIS VERTIS VERTIS<br></br>
+        VERTIS  VERTIS  VERTIS  VERTIS <br></br>
+    VERTIS VERTIS VERTIS VERTIS VERTIS<br></br>
+        VERTIS  VERTIS  VERTIS  VERTIS <br></br>
+    VERTIS VERTIS VERTIS VERTIS VERTIS<br></br>
+        VERTIS  VERTIS  VERTIS  VERTIS 
+    </div>
+         
     </>
 };
 
