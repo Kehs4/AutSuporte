@@ -83,6 +83,7 @@ html {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccccccaf;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   min-width: 400px;
   min-height: 150px;
   border-radius: 10px;
@@ -91,7 +92,6 @@ html {
 
 .add-informations-content:hover {
   box-shadow: 0 0 10px 1px rgba(63, 63, 63, 0.274);
-  transition: box-shadow 0.3s ease;
   transform: scale(1.009);
 }
 
