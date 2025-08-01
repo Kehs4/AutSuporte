@@ -175,6 +175,13 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
 
         </div>
 
+        <div className='menu-options-chamados'>
+          <div className='menu-options-hover'>
+            <Link to='/chamados'><p>Chamados</p></Link>
+          </div>
+
+        </div>
+
       </div>
     </div>
 

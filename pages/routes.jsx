@@ -12,6 +12,7 @@ import ClientsData from './clients/clientsData/clientsData';
 import ApiLogs from './apilogs/apilogs';
 import Maintenance from './maintenance/maintenance';
 import VerifyLocks from './verifylocks/verifylocks';
+import Chamados from './chamados/chamados';
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
         <Route path='/apilogs' element={<ApiLogs />} />
         <Route path='/maintenance' element={<Maintenance />} />
         <Route path='/verifylocks' element={<VerifyLocks />} />
+        <Route path='/chamados' element={<Chamados />} />
       </Routes>
   );
 };

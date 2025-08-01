@@ -96,7 +96,8 @@
   .menu-options-clients,
   .menu-options-apilogs,
   .menu-options-maintenance,
-  .menu-options-verifylocks {
+  .menu-options-verifylocks,
+  .menu-options-chamados {
     display: flex;
     font-size: 1rem;
     line-height: 2rem;
@@ -113,7 +114,8 @@
   .menu-options-clients:hover,
   .menu-options-apilogs:hover,
   .menu-options-maintenance:hover,
-  .menu-options-verifylocks:hover {
+  .menu-options-verifylocks:hover,
+  .menu-options-chamados:hover {
     background-color: #f7f7f7;
     color: rgb(0, 0, 0);
     
