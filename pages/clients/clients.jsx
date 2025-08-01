@@ -62,12 +62,13 @@ function Clients() {
 
         try {
             const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat/' + cod_cliente, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Basic',},
-                    
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Basic',
+                },
+
             })
 
             const cliente = await response.json();
@@ -80,6 +81,25 @@ function Clients() {
             console.error('Erro ao buscar dados do cliente:', error);
         }
     }
+
+    function compareVersions(a, b) {
+        const pa = a.split('.').map(Number);
+        const pb = b.split('.').map(Number);
+        for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+            const na = pa[i] || 0;
+            const nb = pb[i] || 0;
+            if (na > nb) return 1;
+            if (na < nb) return -1;
+        }
+        return 0;
+    }
+
+    // Encontra a versão mais atual
+    const latestVersion = clientspl.length > 0
+        ? clientspl.reduce((max, cliente) =>
+            compareVersions(cliente.versao_vertis_cliente || '0', max.versao_vertis_cliente || '0') > 0 ? cliente : max
+            , clientspl[0]).versao_vertis_cliente
+        : '';
 
     function handleRowDoubleClick(cod_cliente) {
         switchModal();
@@ -97,10 +117,11 @@ function Clients() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': 'Basic',},
-                    
-            })
-    
+                        'Authorization': 'Basic',
+                    },
+
+                })
+
                 const data = await response.json();
 
                 if (response.ok) {
@@ -219,7 +240,7 @@ function Clients() {
                                     <h1>Total de Clientes</h1>
                                 </div>
                                 <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                    0
+                                    {clientspl.length}
                                 </p>
                             </div>
 
@@ -229,7 +250,7 @@ function Clients() {
                                     <h1>Versão Atual</h1>
                                 </div>
                                 <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                    2.9.61.2
+                                    {latestVersion}
                                 </p>
                             </div>
 
