@@ -36,7 +36,6 @@ const EditProfile = () => {
     function handleLogout() {
         localStorage.removeItem("user");
         localStorage.clear();
-        setUserColor('');
         setIsMenuOpen(false);
     }
 
@@ -172,19 +171,16 @@ const EditProfile = () => {
                                         <div
                                             className='user-initial'
                                             style={{
-                                                backgroundColor: userColor,
-                                                width: '80px',
-                                                height: '80px',
                                                 borderRadius: '50%',
                                                 display: 'flex',
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
-                                                fontSize: '26px',
+                                                fontSize: '30px',
                                                 fontWeight: 'bold',
                                                 color: '#fff'
                                             }}
                                         >
-                                            {user.name ? user.name.charAt(0).toUpperCase() : '?'}
+                                            {payload.username ? payload.username.charAt(0).toUpperCase() : '?'}
                                         </div>
                                     )}
                                 </div>

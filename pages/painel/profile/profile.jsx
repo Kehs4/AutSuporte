@@ -121,15 +121,12 @@ const Profile = () => {
                     <div
                       className='user-initial'
                       style={{
-                        width: '80px',
-                        height: '80px',
                         borderRadius: '50%',
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'center',
-                        fontSize: '26px',
+                        fontSize: '30px',
                         fontWeight: 'bold',
-                        color: '#fff'
+                        color: '#fff',
                       }}
                     >
                       {payload.username ? payload.username.charAt(0).toUpperCase() : '?'}

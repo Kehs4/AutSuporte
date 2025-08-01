@@ -114,8 +114,7 @@
   .menu-options-apilogs:hover,
   .menu-options-maintenance:hover,
   .menu-options-verifylocks:hover {
-    background-color: #ebebeb;
-    outline: 1px solid #e4e4e4;
+    background-color: #f7f7f7;
     color: rgb(0, 0, 0);
     
   }
