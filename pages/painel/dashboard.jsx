@@ -40,29 +40,6 @@ function Dashboard() {
     </div>;
   }
 
-  const [userColor, setUserColor] = useState('');
-
-  // Função para obter ou gerar cor persistente
-  function getOrCreateUserColor(userId) {
-    // Use o id do usuário como chave, se houver
-    const token = `userColor_${userId}`;
-    let color = localStorage.getItem(token ? `userColor_${userId}` : token);
-    if (!color) {
-      color = getRandomColor();
-      localStorage.setItem(token, color);
-    }
-    return color;
-  }
-
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
   useEffect(() => {
     document.title = "AutSuporte - Dashboard";
 
@@ -71,11 +48,6 @@ function Dashboard() {
 
     if (storedUser && storedUser !== '{}') {
       setUser(JSON.parse(storedUser));
-    }
-
-    // Use o id ou email do usuário para garantir cor única por usuário
-    if (userOn) {
-      setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
     }
 
     const timer = setTimeout(() => {
@@ -113,7 +85,7 @@ function Dashboard() {
           </div>
 
           <div className="dashboard-flex-wrapper">
-            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={menuSwitch} />
+            <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} />
 
             <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
               <div className='dashboard-header'>

@@ -54,7 +54,6 @@
   .user-initial {
     text-transform: uppercase;
     font-family: 'Poppins', sans-serif;
-    box-shadow: 0 1px 15px rgba(157, 157, 158, 0.932);
   }
   
   .user-image {

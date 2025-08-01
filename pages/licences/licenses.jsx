@@ -33,37 +33,6 @@ const Licenses = () => {
     }
     const token = userOn?.token;
     const payload = parseJwt(token);
-
-    const [userColor, setUserColor] = useState('');
-
-    // Função para obter ou gerar cor persistente
-    function getOrCreateUserColor(userId) {
-        // Use o id do usuário como chave, se houver
-        const token = `userColor_${userId}`;
-        let color = localStorage.getItem(token ? `userColor_${userId}` : token);
-        if (!color) {
-            color = getRandomColor();
-            localStorage.setItem(token, color);
-        }
-        return color;
-    }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    function handleLogout() {
-        localStorage.removeItem("user");
-        localStorage.clear();
-        setUserColor('');
-        setIsMenuOpen(false);
-    }
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const [clients, setClients] = useState([]);
@@ -77,14 +46,6 @@ const Licenses = () => {
         setIsMenuOpen(false);
     }
 
-    if (!user) {
-        return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
-            <p>Usuário não encontrado. Por favor, faça login novamente.</p>
-
-            <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
-        </div>;
-    }
-
     useEffect(() => {
         document.title = "AutSuporte - Licenças de Uso";
 
@@ -96,11 +57,6 @@ const Licenses = () => {
             } catch (erro) {
                 console.error("Erro ao buscar dados da API:", erro);
             }
-        }
-
-        // Defina a cor do usuário ao montar o componente
-        if (userOn) {
-            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
         }
 
         const timer = setTimeout(() => {
@@ -164,7 +120,7 @@ const Licenses = () => {
             </div>
 
             <div className="dashboard-flex-wrapper">
-                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
+                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>

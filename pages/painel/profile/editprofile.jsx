@@ -33,29 +33,6 @@ const EditProfile = () => {
 
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    const [userColor, setUserColor] = useState('');
-
-    // Função para obter ou gerar cor persistente
-  function getOrCreateUserColor(userId) {
-    // Use o id do usuário como chave, se houver
-    const token = `userColor_${userId}`;
-    let color = localStorage.getItem(token ? `userColor_${userId}` : token);
-    if (!color) {
-      color = getRandomColor();
-      localStorage.setItem(token, color);
-    }
-    return color;
-  }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
     function handleLogout() {
         localStorage.removeItem("user");
         localStorage.clear();
@@ -73,14 +50,6 @@ const EditProfile = () => {
         setIsMenuOpen((prev) => !prev);
     }
 
-    if (!user) {
-        return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
-            <p>Usuário não encontrado. Por favor, faça login novamente.</p>
-
-            <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
-        </div>;
-    }
-
     // Estados para os campos editáveis
     const [name, setName] = useState(user?.name || "");
     const [surname, setSurname] = useState(user?.surname || "");
@@ -96,11 +65,6 @@ const EditProfile = () => {
 
     useEffect(() => {
         document.title = "AutSuporte - Editar Perfil";
-
-        if (userOn) {
-            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
-        }
-
 
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -189,7 +153,7 @@ const EditProfile = () => {
             </div>
 
             <div className="dashboard-flex-wrapper">
-                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
+                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>

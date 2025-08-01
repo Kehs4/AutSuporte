@@ -34,42 +34,12 @@ const Errors = () => {
     const token = userOn?.token;
     const payload = parseJwt(token);
 
-    const [userColor, setUserColor] = useState('');
-
     const [errors, setErrors] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('all');
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(25);
-
-    // Função para obter ou gerar cor persistente
-    function getOrCreateUserColor(userId) {
-        // Use o id do usuário como chave, se houver
-        const token = `userColor_${userId}`;
-        let color = localStorage.getItem(token ? `userColor_${userId}` : token);
-        if (!color) {
-            color = getRandomColor();
-            localStorage.setItem(token, color);
-        }
-        return color;
-    }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    function handleLogout() {
-        localStorage.removeItem("user");
-        localStorage.clear();
-        setUserColor('');
-        setIsMenuOpen(false);
-    }
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -110,13 +80,6 @@ const Errors = () => {
 
     useEffect(() => {
         document.title = "AutSuporte - Logs de Erros";
-
-        
-
-        // Defina a cor do usuário ao montar o componente
-        if (userOn) {
-            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
-        }
 
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -178,7 +141,7 @@ const Errors = () => {
             </div>
 
             <div className="dashboard-flex-wrapper">
-                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={handleCloseMenu} />
+                <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={handleCloseMenu} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>

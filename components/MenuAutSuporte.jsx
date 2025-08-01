@@ -8,6 +8,15 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
   // Carrega o usuário do localStorage ao montar o componente
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const userOn = JSON.parse(localStorage.getItem("user"));
+
+  if (!userOn) {
+        return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
+            <p>Usuário não encontrado. Por favor, faça login novamente.</p>
+
+            <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
+        </div>;
+    }
 
   // Basta passar o token JWT para esta função
   function parseJwt(token) {
@@ -65,7 +74,7 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
           <div
             className='user-initial'
             style={{
-              backgroundColor: userColor,
+              backgroundColor: 'rgba(53, 53, 53, 1)',
               width: '50px',
               height: '50px',
               borderRadius: '50%',

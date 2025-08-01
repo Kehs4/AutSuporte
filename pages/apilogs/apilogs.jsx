@@ -31,37 +31,6 @@ function ApiLogs() {
     const token = userOn?.token;
     const payload = parseJwt(token);
 
-    if (!userOn) {
-        return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
-            <p>Usuário não encontrado. Por favor, faça login novamente.</p>
-
-            <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
-        </div>;
-    }
-
-    const [userColor, setUserColor] = useState('');
-
-    // Função para obter ou gerar cor persistente
-    function getOrCreateUserColor(userId) {
-        // Use o id do usuário como chave, se houver
-        const token = `userColor_${userId}`;
-        let color = localStorage.getItem(token ? `userColor_${userId}` : token);
-        if (!color) {
-            color = getRandomColor();
-            localStorage.setItem(token, color);
-        }
-        return color;
-    }
-
-    function getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
     const [statusVertis, setStatusVertis] = useState('');
     const [statusLaudos, setStatusLaudos] = useState('');
     const [statusConstellation, setStatusConstellation] = useState('');
@@ -192,11 +161,6 @@ function ApiLogs() {
             setUser(JSON.parse(storedUser));
         }
 
-        // Use o id ou email do usuário para garantir cor única por usuário
-        if (userOn) {
-            setUserColor(getOrCreateUserColor(payload.username || payload.origem || "default"));
-        }
-
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
@@ -261,7 +225,7 @@ function ApiLogs() {
                     </div>
 
                     <div className="dashboard-flex-wrapper">
-                        <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} userColor={userColor} onCloseMenu={menuSwitch} />
+                        <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} />
 
                         <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                             <div className='dashboard-header'>
