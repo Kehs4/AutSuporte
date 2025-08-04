@@ -9,11 +9,15 @@ function Chamados() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
-    const [clients, setClients] = useState([]);
-    const [selectedClientId, setSelectedClientId] = useState('');
-    const [clientDetails, setClientDetails] = useState(null);
 
     const userOn = JSON.parse(localStorage.getItem("user"));
+    if (!userOn) {
+        return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', marginTop: '60px', color: '#ff0000', backgroundColor: '#f8d7da', padding: '20px', borderRadius: '10px', maxWidth: '600px', margin: 'auto' }}>
+            <p>Usuário não encontrado. Por favor, faça login novamente.</p>
+
+            <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
+        </div>;
+    }
 
     // Basta passar o token JWT para esta função
     function parseJwt(token) {
@@ -50,29 +54,6 @@ function Chamados() {
         return () => clearTimeout(timer);
     }, []);
 
-    async function fetchClients() {
-        try {
-            const response = await fetch('http://177.11.209.38/vertis/VertisConnect.dll/api/V1.1/vertis/clientesfat', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': 'Basic',
-                },
-
-            })
-            const data = await response.json();
-            setClients(data);
-        } catch (error) {
-            setClients([]);
-        }
-    }
-
-    useEffect(() => {
-
-        fetchClients();
-    }, []);
-
     if (isLoading) {
         return <Loading />;
     }
@@ -99,7 +80,7 @@ function Chamados() {
                     </div>
 
                     <div className="dashboard-flex-wrapper">
-                        <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} /> 
+                        <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={menuSwitch} />
 
                         <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                             <div className='dashboard-header'>
@@ -110,10 +91,10 @@ function Chamados() {
                             <div className='dashboard-content-verifylocks'>
                                 <div className='dashboard-content-verifylocks-header'>
                                     <p className='dashboard-content-verifylocks-text'>Verifique os chamados dos clientes.</p>
-                                    
+
                                 </div>
 
-                                
+
                             </div>
 
                         </div>

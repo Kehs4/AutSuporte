@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import GppMaybeIcon from '@mui/icons-material/Api';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LockClockIcon from '@mui/icons-material/LockClock';
+import AddCommentIcon from '@mui/icons-material/AddComment';
 
 const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
   // Carrega o usuário do localStorage ao montar o componente
@@ -177,6 +178,7 @@ const MenuAutSuporte = ({ isMenuOpen, userColor, onCloseMenu }) => {
 
         <div className='menu-options-chamados'>
           <div className='menu-options-hover'>
+            <AddCommentIcon style={{ fontSize: '15px' }} />
             <Link to='/chamados'><p>Chamados</p></Link>
           </div>
 
