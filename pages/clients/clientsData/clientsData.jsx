@@ -78,7 +78,7 @@ function ClientsData() {
 
                     const clientSubtitle = document.getElementById('client-subtitle')
 
-                    clientSubtitle.innerHTML = 'Olá <font color="#0356bb">' + [payload.username] + '</font>, esses são os dados do cliente <font color="#0356bb">' + data[0].nome_cliente; + '</font>.'
+                    clientSubtitle.innerHTML = 'Olá <font color="#4a9afcff">' + [payload.username] + '</font>, esses são os dados do cliente <font color="#4a9afcff">' + data[0].nome_cliente; + '</font>.'
 
                     // Retornando todos os inputs das informações dos Dados dos Clientes.
                     const getNomeCliente = document.getElementById('client-name');
@@ -268,9 +268,9 @@ function ClientsData() {
                 <MenuAutSuporte isMenuOpen={isMenuOpen} user={user} onCloseMenu={handleCloseMenu} />
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
-                    <div className='dashboard-header'>
-                        <h1 className='dashboard-title' id='client-title'></h1>
-                        <p className='dashboard-subtitle' id='client-subtitle'></p>
+                    <div className='dashboard-header' style={{backgroundColor: 'rgba(32, 40, 51, 1)'}}>
+                        <h1 className='dashboard-title' id='client-title' style={{color: '#fff' }}></h1>
+                        <p className='dashboard-subtitle' id='client-subtitle' style={{color: '#fff' }}></p>
                     </div>
                     <div className='test'>
                         <div className='dashboard-content-container-clients'>
