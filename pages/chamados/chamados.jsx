@@ -27,21 +27,21 @@ function Chamados() {
     const [chamados, setChamados] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [newChamado, setNewChamado] = useState({
-        horario: '',
+        data_chamado: '',
         cliente: '',
         motivo: '',
         solucao: '',
-        horafim: ''
+        encerrado: ''
     });
 
     function handleOpenModal() {
         setModalOpen(true);
         setNewChamado({
-            horario: '',
+            data_chamado: '',
             cliente: '',
             motivo: '',
             solucao: '',
-            horafim: ''
+            encerrado: ''
         });
     }
 
@@ -84,6 +84,7 @@ function Chamados() {
         if (storedUser && storedUser !== '{}') {
             setUser(JSON.parse(storedUser));
         }
+
 
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -182,7 +183,14 @@ function Chamados() {
                                                             Data e Hora da Abertura
                                                         </label>
 
-                                                        <input className='input-modal-chamados' type='datetime-local' name="horario" value={newChamado.horario} onChange={handleChange} required/>
+                                                        <input
+                                                            className='input-modal-chamados'
+                                                            type='datetime-local'
+                                                            name="data_chamado"
+                                                            value={newChamado.data_chamado}
+                                                            onChange={handleChange}
+                                                            required
+                                                        />
                                                     </div>
 
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -221,7 +229,14 @@ function Chamados() {
                                                         <label>
                                                             Data e Hora Final
                                                         </label>
-                                                        <input className='input-modal-chamados' type="datetime-local" name="horafim" value={newChamado.horafim} onChange={handleChange} required/>
+                                                        <input
+                                                            className='input-modal-chamados'
+                                                            type="datetime-local"
+                                                            name="encerrado"
+                                                            value={newChamado.encerrado}
+                                                            onChange={handleChange}
+                                                            required
+                                                        />
 
                                                     </div>
 
@@ -325,28 +340,40 @@ function Chamados() {
                                     <table className='table-licenses'>
                                         <thead className='table-licenses-head'>
                                             <tr>
-                                                <th>Horário da Abertura</th>
+                                                <th>Data</th>
                                                 <th>Nome do Cliente</th>
+                                                <th>Contato</th>
+                                                <th>Horário do Chamado</th>
+                                                <th>Categoria</th>
                                                 <th>Motivo do Chamado</th>
                                                 <th>Solução do Chamado</th>
-                                                <th>Analista</th>
+                                                <th>Status</th>
                                                 <th>Horário Final</th>
+                                                <th>Tempo decorrido</th>
+                                                <th>Analista</th>
+                                                <th>Nota</th>
                                             </tr>
                                         </thead>
                                         <tbody className='table-body'>
                                             {chamados.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan={6} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
+                                                    <td colSpan={12} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
                                                 </tr>
                                             ) : (
                                                 chamados.map((chamado, index) => (
                                                     <tr key={index}>
-                                                        <td className='datetime'>{chamado.horario.replace('T', ' ')}</td>
+                                                        <td className='datetime'>{chamado.data_chamado.replace('T', ' ')}</td>
                                                         <td>{chamado.cliente}</td>
-                                                        <td>{chamado.motivo}</td>
+                                                        <td>{chamado.contato}</td>
+                                                        <td>{chamado.data_hora}</td>
+                                                        <td>{chamado.categoria}</td>
+                                                        <td>{chamado.chamado}</td>
                                                         <td>{chamado.solucao}</td>
+                                                        <td>{chamado.status}</td>
+                                                        <td className='datetime'>{chamado.encerrado.replace('T', ' ')}</td>
+                                                        <td>{chamado.tempo}</td>
                                                         <td>{chamado.analista}</td>
-                                                        <td className='datetime'>{chamado.horafim.replace('T', ' ')}</td>
+                                                        <td>{chamado.nota}</td>
                                                     </tr>
                                                 ))
                                             )}
