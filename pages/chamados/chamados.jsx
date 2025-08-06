@@ -34,6 +34,13 @@ function Chamados() {
         encerrado: ''
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(25);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
     function handleOpenModal() {
         setModalOpen(true);
         setNewChamado({
@@ -58,7 +65,6 @@ function Chamados() {
         setModalOpen(false);
     }
 
-    // Basta passar o token JWT para esta função
     function parseJwt(token) {
         if (!token) return null;
         const base64Url = token.split('.')[1];
@@ -75,6 +81,19 @@ function Chamados() {
     const token = userOn?.token;
     const payload = parseJwt(token);
 
+    async function fetchChamados() {
+        try {
+            const response = await fetch('http://localhost:9000/chamados');
+            if (!response.ok) {
+                throw new Error('Erro ao buscar chamados');
+            }
+            const data = await response.json();
+            setChamados(data);
+        } catch (error) {
+            console.error('Erro ao buscar chamados:', error);
+        }
+    }
+
     useEffect(() => {
         document.title = "AutSuporte - Chamados";
 
@@ -90,13 +109,147 @@ function Chamados() {
             setIsLoading(false);
         }, 2000);
 
-
+        fetchChamados();
         return () => clearTimeout(timer);
     }, []);
 
     if (isLoading) {
         return <Loading />;
     }
+
+    // Função para limpar campos ASCII genéricos (remove espaços, underline, etc)
+    function formatAsciiText(value) {
+        if (value === null || value === undefined) return '';
+        return String(value).replace(/_/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function formatDateOnly(value) {
+        if (!value) return '';
+        // Aceita formatos: "2025-01-02 03:00:00.00" ou "2025-01-02"
+        const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (!match) return value;
+        const [, year, month, day] = match;
+        return `${day}/${month}/${year}`;
+    }
+
+    function formatDateHourMinute(value) {
+        if (!value) return '';
+        // Aceita formatos: "2025-01-02 03:00:00.00" ou "2025-01-02 03:00:00"
+        const match = value.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+        if (!match) return value;
+        const [, year, month, day, hour, minute] = match;
+        return `${day}/${month}/${year} ${hour}:${minute}`;
+    }
+
+    // Função para filtrar chamados pelo período selecionado
+    function filtrarPorPeriodo(chamados) {
+        if (!startDate && !endDate) return chamados;
+        return chamados.filter(chamado => {
+            const data = chamado.data_hora ? new Date(chamado.data_hora) : null;
+            if (!data || isNaN(data.getTime())) return false;
+            let afterStart = true, beforeEnd = true;
+            if (startDate) {
+                const inicio = new Date(startDate);
+                afterStart = data >= inicio;
+            }
+            if (endDate) {
+                const fim = new Date(endDate);
+                // Inclui o dia final até 23:59
+                fim.setHours(23, 59, 59, 999);
+                beforeEnd = data <= fim;
+            }
+            return afterStart && beforeEnd;
+        });
+    }
+
+    // Aplica filtro de período antes do filtro de busca
+    const chamadosPeriodo = filtrarPorPeriodo(chamados);
+
+    // Função para buscar em todas as colunas da linha
+    function chamadoMatchesSearch(chamado, searchTerm) {
+        if (!searchTerm) return true;
+        const term = searchTerm.toLowerCase();
+
+        const campos = [
+            'data_chamado',
+            'cliente',
+            'contato',
+            'data_hora',
+            'categoria',
+            'chamado',
+            'solucao',
+            'status',
+            'encerrado',
+            'tempo',
+            'analista',
+            'nota'
+        ];
+        return campos.some(campo => {
+            const valor = chamado[campo];
+            return valor && String(valor).toLowerCase().includes(term);
+        });
+    }
+
+    // Filtra chamados pelo nome do cliente
+    const filteredChamados = chamadosPeriodo.filter(chamado =>
+        chamadoMatchesSearch(chamado, searchTerm)
+    );
+
+    function handleSort(key) {
+        setSortConfig(prev => ({
+            key,
+            direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+        }));
+    }
+
+    function getSortedChamados(chamados) {
+        if (!sortConfig.key) return chamados;
+        return [...chamados].sort((a, b) => {
+            let aValue = a[sortConfig.key] || '';
+            let bValue = b[sortConfig.key] || '';
+            // Para data, converte para Date
+            if (sortConfig.key === 'data_chamado' || sortConfig.key === 'data_hora' || sortConfig.key === 'encerrado') {
+                aValue = new Date(aValue);
+                bValue = new Date(bValue);
+            } else {
+                aValue = String(aValue).toLowerCase();
+                bValue = String(bValue).toLowerCase();
+            }
+            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    const sortedChamados = getSortedChamados(filteredChamados);
+    const totalPages = Math.ceil(sortedChamados.length / itemsPerPage);
+    const paginatedChamados = sortedChamados.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    function handleRowDoubleClick(chamado) {
+        setNewChamado({
+            data_chamado: chamado.data_hora || '',
+            cliente: chamado.cliente || '',
+            motivo: chamado.chamado || '', 
+            solucao: chamado.solucao || '',
+            encerrado: chamado.encerrado || '',
+            analista: chamado.analista || ''
+        });
+        setModalOpen(true);
+    }
+
+    const quantidadeChamadosNaTela = paginatedChamados.length;
+    const quantidadeChamadosTotal = sortedChamados.length;
+    const chamadosResolvidosHoje = sortedChamados.filter(c => {
+        const encerrado = c.encerrado ? new Date(c.encerrado) : null;
+        if (!encerrado || isNaN(encerrado)) return false;
+        const hoje = new Date();
+        return encerrado.getDate() === hoje.getDate() &&
+            encerrado.getMonth() === hoje.getMonth() &&
+            encerrado.getFullYear() === hoje.getFullYear();
+    }).length;
 
     return (
         <MenuToggleProvider>
@@ -177,7 +330,7 @@ function Chamados() {
 
                                             <div className='modal-form' style={{ display: 'flex', flexDirection: 'row', gap: '10px', textAlign: 'left' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', minWidth: '300px', marginRight: '20px' }}>
-                                                    <h4 style={{ textAlign: 'center', marginBottom: '5px', fontSize: '1.1rem'  }}>Cliente</h4>
+                                                    <h4 style={{ textAlign: 'center', marginBottom: '5px', fontSize: '1.1rem' }}>Cliente</h4>
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                         <label>
                                                             Data e Hora da Abertura
@@ -185,9 +338,9 @@ function Chamados() {
 
                                                         <input
                                                             className='input-modal-chamados'
-                                                            type='datetime-local'
+                                                            type='text'
                                                             name="data_chamado"
-                                                            value={newChamado.data_chamado}
+                                                            value={newChamado.data_hora}
                                                             onChange={handleChange}
                                                             required
                                                         />
@@ -198,14 +351,14 @@ function Chamados() {
                                                         <label>
                                                             Nome do Cliente
                                                         </label>
-                                                        <input className='input-modal-chamados' type="text" name="cliente" value={newChamado.cliente} onChange={handleChange} placeholder='Nome do Cliente' required/>
+                                                        <input className='input-modal-chamados' type="text" name="cliente" value={newChamado.cliente} onChange={handleChange} placeholder='Nome do Cliente' required />
                                                     </div>
 
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                         <label>
                                                             Motivo do Chamado
                                                         </label>
-                                                        <textarea className='comment-solution' name="motivo" value={newChamado.motivo} onChange={handleChange} cols={20} rows={5} placeholder='Escreva o motivo do chamado do cliente aqui...' required/>
+                                                        <textarea className='comment-solution' name="motivo" value={newChamado.motivo} onChange={handleChange} cols={20} rows={5} placeholder='Escreva o motivo do chamado do cliente aqui...' required />
 
                                                     </div>
                                                 </div>
@@ -220,7 +373,7 @@ function Chamados() {
                                                         <label>
                                                             Solução do Chamado
                                                         </label>
-                                                        <textarea className='comment-solution' name="solucao" value={newChamado.solucao} onChange={handleChange} cols={20} rows={5} placeholder='Escreva a solução encontrada...' required/>
+                                                        <textarea className='comment-solution' name="solucao" value={newChamado.solucao} onChange={handleChange} cols={20} rows={5} placeholder='Escreva a solução encontrada...' required />
 
                                                     </div>
 
@@ -231,7 +384,7 @@ function Chamados() {
                                                         </label>
                                                         <input
                                                             className='input-modal-chamados'
-                                                            type="datetime-local"
+                                                            type="text"
                                                             name="encerrado"
                                                             value={newChamado.encerrado}
                                                             onChange={handleChange}
@@ -245,15 +398,15 @@ function Chamados() {
                                                         <label>
                                                             Analista
                                                         </label>
-                                                        <input className='input-modal-chamados' type="text" name="analista" value={newChamado.analista} onChange={handleChange} placeholder='Nome do Analista' required/>
+                                                        <input className='input-modal-chamados' type="text" name="analista" value={newChamado.analista} onChange={handleChange} placeholder='Nome do Analista' required />
                                                     </div>
                                                 </div>
 
                                             </div>
-                                            
+
                                             <div style={{ marginTop: 24, display: 'flex', gap: '12px', justifyContent: 'flex-end', alignItems: 'center' }}>
                                                 <button className='btn-cancel-chamados' onClick={handleCloseModal}>Cancelar</button>
-                                                
+
                                                 <button className='btn-save-chamado' type="submit">
                                                     <span class="button__icon-wrapper">
                                                         <svg
@@ -295,7 +448,7 @@ function Chamados() {
                                             <h1>Chamados em Aberto</h1>
                                         </div>
                                         <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            42
+                                            {quantidadeChamadosNaTela}
                                         </p>
                                     </div>
 
@@ -304,9 +457,8 @@ function Chamados() {
                                             <FactCheckIcon style={{ color: '#00b300' }} />
                                             <h1>Chamados Resolvidos Hoje</h1>
                                         </div>
-
                                         <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            61
+                                            {chamadosResolvidosHoje}
                                         </p>
                                     </div>
 
@@ -328,52 +480,145 @@ function Chamados() {
                                         </div>
 
                                         <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            4570
+                                            {quantidadeChamadosTotal}
                                         </p>
                                     </div>
+                                </div>
+
+                                <div className='dashboard-header-chamados'>
+
+                                    <div className='dashboard-header-search'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                        </svg>
+                                        <input
+                                            type="text"
+                                            placeholder='Buscar:'
+                                            id='search-clients'
+                                            value={searchTerm}
+                                            onChange={e => {
+                                                setSearchTerm(e.target.value);
+                                                setCurrentPage(1); // volta para a primeira página ao pesquisar
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className='dashboard-chamados-countrow'>
+                                        <select
+                                            name="rows-count"
+                                            id="chamados-row-count"
+                                            className="clients-countrow"
+                                            value={itemsPerPage}
+                                            onChange={e => {
+                                                const value = e.target.value === "" ? filteredChamados.length : Number(e.target.value);
+                                                setItemsPerPage(value);
+                                                setCurrentPage(1); // volta para a primeira página ao mudar o tamanho
+                                            }}
+                                        >
+                                            <option value="">Todos</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+
+                                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '0 10px', marginLeft: '20px' }}>
+                                        <label style={{ fontSize: '0.9rem' }}>
+                                            De:&nbsp;
+                                            <input
+                                                type="date"
+                                                value={startDate}
+                                                onChange={e => {
+                                                    setStartDate(e.target.value);
+                                                    setCurrentPage(1);
+                                                }}
+                                                style={{ padding: '4px', minWidth: '150px', fontSize: '0.8rem', border: '1px solid #ccc', marginLeft: '5px', outline: 'none' }}
+                                            />
+                                        </label>
+                                        <label>
+                                            Até:&nbsp;
+                                            <input
+                                                type="date"
+                                                value={endDate}
+                                                onChange={e => {
+                                                    setEndDate(e.target.value);
+                                                    setCurrentPage(1);
+                                                }}
+                                                style={{ padding: '4px', minWidth: '150px', fontSize: '0.8rem', border: '1px solid #ccc', outline: 'none' }}
+                                            />
+                                        </label>
+                                    </div>
+
+                                    {totalPages > 1 && (
+                                        <div className="table-pagination" style={{ display: 'flex', justifyContent: 'center'}}>
+                                            <button
+                                                onClick={() => setCurrentPage(1)}
+                                                disabled={currentPage === 1}
+                                            >{"<<"}</button>
+                                            <button
+                                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                                disabled={currentPage === 1}
+                                            >{"<"}</button>
+                                            <span style={{ margin: '0 12px' }}>
+                                                Página {currentPage} de {totalPages}
+                                            </span>
+                                            <button
+                                                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                                disabled={currentPage === totalPages}
+                                            >{">"}</button>
+                                            <button
+                                                onClick={() => setCurrentPage(totalPages)}
+                                                disabled={currentPage === totalPages}
+                                            >{">>"}</button>
+                                        </div>
+                                    )}
                                 </div>
 
 
 
                                 <div className='dashboard-content-licenses'>
 
-                                    <table className='table-licenses'>
+                                    <table className='table-chamados'>
                                         <thead className='table-licenses-head'>
                                             <tr>
-                                                <th>Data</th>
-                                                <th>Nome do Cliente</th>
-                                                <th>Contato</th>
-                                                <th>Horário do Chamado</th>
-                                                <th>Categoria</th>
-                                                <th>Motivo do Chamado</th>
-                                                <th>Solução do Chamado</th>
-                                                <th>Status</th>
-                                                <th>Horário Final</th>
-                                                <th>Tempo decorrido</th>
-                                                <th>Analista</th>
-                                                <th>Nota</th>
+                                                <th onClick={() => handleSort('data_chamado')} style={{ cursor: 'pointer' }}>Data</th>
+                                                <th onClick={() => handleSort('cliente')} style={{ cursor: 'pointer' }}>Nome do Cliente</th>
+                                                <th onClick={() => handleSort('contato')} style={{ cursor: 'pointer' }}>Contato</th>
+                                                <th onClick={() => handleSort('data_hora')} style={{ cursor: 'pointer' }}>Horário do Chamado</th>
+                                                <th onClick={() => handleSort('categoria')} style={{ cursor: 'pointer' }}>Categoria</th>
+                                                <th onClick={() => handleSort('chamado')} style={{ cursor: 'pointer' }}>Motivo do Chamado</th>
+                                                <th onClick={() => handleSort('solucao')} style={{ cursor: 'pointer' }}>Solução do Chamado</th>
+                                                <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>Status</th>
+                                                <th onClick={() => handleSort('encerrado')} style={{ cursor: 'pointer' }}>Horário Final</th>
+                                                <th onClick={() => handleSort('tempo')} style={{ cursor: 'pointer' }}>Tempo decorrido</th>
+                                                <th onClick={() => handleSort('analista')} style={{ cursor: 'pointer' }}>Analista</th>
+                                                <th onClick={() => handleSort('nota')} style={{ cursor: 'pointer' }}>Nota</th>
                                             </tr>
                                         </thead>
-                                        <tbody className='table-body'>
-                                            {chamados.length === 0 ? (
+                                        <tbody className='table-body-chamados'>
+                                            {paginatedChamados.length === 0 ? (
                                                 <tr>
                                                     <td colSpan={12} style={{ textAlign: 'center' }}>Nenhum dado encontrado.</td>
                                                 </tr>
                                             ) : (
-                                                chamados.map((chamado, index) => (
-                                                    <tr key={index}>
-                                                        <td className='datetime'>{chamado.data_chamado.replace('T', ' ')}</td>
-                                                        <td>{chamado.cliente}</td>
-                                                        <td>{chamado.contato}</td>
-                                                        <td>{chamado.data_hora}</td>
-                                                        <td>{chamado.categoria}</td>
-                                                        <td>{chamado.chamado}</td>
-                                                        <td>{chamado.solucao}</td>
-                                                        <td>{chamado.status}</td>
-                                                        <td className='datetime'>{chamado.encerrado.replace('T', ' ')}</td>
-                                                        <td>{chamado.tempo}</td>
-                                                        <td>{chamado.analista}</td>
-                                                        <td>{chamado.nota}</td>
+                                                paginatedChamados.map((chamado, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        onDoubleClick={() => handleRowDoubleClick(chamado)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    >
+                                                        <td className='datetime' style={{ fontSize: '10px' }}>{formatDateOnly(chamado.data_chamado)}</td>
+                                                        <td className='column-name-chamado'>{formatAsciiText(chamado.cliente)}</td>
+                                                        <td className='column-name-chamado'>{formatAsciiText(chamado.contato)}</td>
+                                                        <td className='datetime' style={{ fontSize: '10px' }}>{formatDateHourMinute(chamado.data_hora)}</td>
+                                                        <td>{formatAsciiText(chamado.categoria)}</td>
+                                                        <td>{formatAsciiText(chamado.chamado)}</td>
+                                                        <td>{formatAsciiText(chamado.solucao)}</td>
+                                                        <td>{formatAsciiText(chamado.status)}</td>
+                                                        <td className='datetime' style={{ fontSize: '10px' }}>{formatDateHourMinute(chamado.encerrado)}</td>
+                                                        <td>{formatAsciiText(chamado.tempo)}</td>
+                                                        <td>{formatAsciiText(chamado.analista)}</td>
+                                                        <td>{formatAsciiText(chamado.nota)}</td>
                                                     </tr>
                                                 ))
                                             )}
