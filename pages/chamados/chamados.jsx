@@ -507,7 +507,7 @@ function Chamados() {
                                         <select
                                             name="rows-count"
                                             id="chamados-row-count"
-                                            className="clients-countrow"
+                                            className="chamados-countrow"
                                             value={itemsPerPage}
                                             onChange={e => {
                                                 const value = e.target.value === "" ? filteredChamados.length : Number(e.target.value);
@@ -559,7 +559,7 @@ function Chamados() {
                                                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                                                 disabled={currentPage === 1}
                                             >{"<"}</button>
-                                            <span style={{ margin: '0 12px' }}>
+                                            <span>
                                                 Página {currentPage} de {totalPages}
                                             </span>
                                             <button
