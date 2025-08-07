@@ -23,13 +23,17 @@ function Chamados() {
             <Link to="/home"><button style={{ backgroundColor: '#FFAAAA', color: 'red', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Home</button></Link>
         </div>;
     }
-
+    const agora = new Date();
+    const pad = n => n.toString().padStart(2, '0');
+    const dataFormatada = `${agora.getFullYear()}-${pad(agora.getMonth() + 1)}-${pad(agora.getDate())} ${pad(agora.getHours())}:${pad(agora.getMinutes())}`;
+    
     const [chamados, setChamados] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [newChamado, setNewChamado] = useState({
+        dataFormatada: '',
         data_chamado: '',
         cliente: '',
-        motivo: '',
+        chamado: '',
         solucao: '',
         encerrado: ''
     });
@@ -42,11 +46,14 @@ function Chamados() {
     const [endDate, setEndDate] = useState('');
 
     function handleOpenModal() {
+        
+        
         setModalOpen(true);
         setNewChamado({
+            dataFormatada: dataFormatada,
             data_chamado: '',
             cliente: '',
-            motivo: '',
+            chamado: '',
             solucao: '',
             encerrado: ''
         });
@@ -115,12 +122,6 @@ function Chamados() {
 
     if (isLoading) {
         return <Loading />;
-    }
-
-    // Função para limpar campos ASCII genéricos (remove espaços, underline, etc)
-    function formatAsciiText(value) {
-        if (value === null || value === undefined) return '';
-        return String(value).replace(/_/g, ' ').replace(/\s+/g, ' ').trim();
     }
 
     function formatDateOnly(value) {
@@ -203,11 +204,17 @@ function Chamados() {
     }
 
     function getSortedChamados(chamados) {
-        if (!sortConfig.key) return chamados;
+        // Se não houver sortConfig, ordena por data_hora decrescente (mais recente primeiro)
+        if (!sortConfig.key) {
+            return [...chamados].sort((a, b) => {
+                const aValue = new Date(a.data_hora || a.data_chamado);
+                const bValue = new Date(b.data_hora || b.data_chamado);
+                return bValue - aValue; // decrescente
+            });
+        }
         return [...chamados].sort((a, b) => {
             let aValue = a[sortConfig.key] || '';
             let bValue = b[sortConfig.key] || '';
-            // Para data, converte para Date
             if (sortConfig.key === 'data_chamado' || sortConfig.key === 'data_hora' || sortConfig.key === 'encerrado') {
                 aValue = new Date(aValue);
                 bValue = new Date(bValue);
@@ -230,26 +237,19 @@ function Chamados() {
 
     function handleRowDoubleClick(chamado) {
         setNewChamado({
-            data_chamado: chamado.data_hora || '',
+            dataFormatada: formatDateHourMinute(chamado.data_chamado || newChamado.dataFormatada || ''),
+            data_hora: formatDateHourMinute(chamado.data_hora || ''),
             cliente: chamado.cliente || '',
-            motivo: chamado.chamado || '', 
+            chamado: chamado.chamado || '',
             solucao: chamado.solucao || '',
             encerrado: chamado.encerrado || '',
             analista: chamado.analista || ''
         });
         setModalOpen(true);
     }
-
-    const quantidadeChamadosNaTela = paginatedChamados.length;
+    const chamadosEmAberto = sortedChamados.filter(c => c.status === 'Pendente').length;
     const quantidadeChamadosTotal = sortedChamados.length;
-    const chamadosResolvidosHoje = sortedChamados.filter(c => {
-        const encerrado = c.encerrado ? new Date(c.encerrado) : null;
-        if (!encerrado || isNaN(encerrado)) return false;
-        const hoje = new Date();
-        return encerrado.getDate() === hoje.getDate() &&
-            encerrado.getMonth() === hoje.getMonth() &&
-            encerrado.getFullYear() === hoje.getFullYear();
-    }).length;
+
 
     return (
         <MenuToggleProvider>
@@ -283,23 +283,56 @@ function Chamados() {
 
                             <div className='dashboard-content-container-licenses'>
 
+                                <div className='dashboard-content-stats'>
+                                    <div className='dashboard-stats-card'>
+                                        <div className='dashboard-stats-title'>
+                                            <AddCommentIcon style={{ color: '#ff9100ff' }} />
+                                            <h1>Chamados em Aberto</h1>
+                                        </div>
+                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            {chamadosEmAberto}
+                                        </p>
+                                    </div>
+
+                                    <div className='dashboard-stats-card'>
+                                        <div className='dashboard-stats-title'>
+                                            <FactCheckIcon style={{ color: '#00b300' }} />
+                                            <h1>Chamados Resolvidos Hoje</h1>
+                                        </div>
+                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            0
+                                        </p>
+                                    </div>
+
+                                    <div className='dashboard-stats-card'>
+                                        <div className='dashboard-stats-title'>
+                                            <AccessTimeIcon style={{ color: '#04204b' }} />
+                                            <h1>Tempo Médio de Resolução (7 dias)</h1>
+                                        </div>
+
+                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            1h30min
+                                        </p>
+                                    </div>
+
+                                    <div className='dashboard-stats-card'>
+                                        <div className='dashboard-stats-title'>
+                                            <SourceIcon style={{ color: '#008cffff' }} />
+                                            <h1>Total de Chamados</h1>
+                                        </div>
+
+                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
+                                            {quantidadeChamadosTotal}
+                                        </p>
+                                    </div>
+                                </div>
+
+
                                 <button
                                     className='btn-new-chamado'
-                                    style={{
-                                        position: 'fixed',
-                                        bottom: 20,
-                                        right: 20,
-                                        alignItems: 'center',
-                                        color: '#fff',
-                                        border: 'none',
-                                        borderRadius: '50px',
-                                        width: '50px',
-                                        height: '50px',
-                                        fontWeight: 'bold',
-                                        fontSize: '1.2rem',
-                                        marginBottom: '16px',
-                                        cursor: 'pointer',
-                                        border: '1px solid #ffdab7ff',
+                                    style={{ position: 'fixed', bottom: 20, right: 20, alignItems: 'center', color: '#fff',
+                                        border: 'none', borderRadius: '50px', width: '50px', height: '50px', fontWeight: 'bold',
+                                        fontSize: '1.2rem', marginBottom: '16px', cursor: 'pointer', border: '1px solid #ffdab7ff',
                                     }}
                                     onClick={handleOpenModal}
                                 >
@@ -308,21 +341,13 @@ function Chamados() {
 
                                 {modalOpen && (
                                     <form className="modal-background" onSubmit={handleSaveChamado} style={{
-                                        position: 'fixed',
-                                        top: 0, left: 0, right: 0, bottom: 0,
-                                        background: 'rgba(0, 0, 0, 0.48)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        zIndex: 9999
+                                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                                        background: 'rgba(0, 0, 0, 0.48)', display: 'flex', alignItems: 'center',
+                                        justifyContent: 'center', zIndex: 9999
                                     }} onClick={handleCloseModal}>
                                         <div className="modal-content" style={{
-                                            background: '#fff',
-                                            padding: 32,
-                                            borderRadius: 12,
-                                            minWidth: 700,
-                                            minHeight: 400,
-                                            boxShadow: '0 2px 16px rgba(0,0,0,0.15)'
+                                            background: '#fff', padding: 32, borderRadius: 12,
+                                            minWidth: 700, minHeight: 400, boxShadow: '0 2px 16px rgba(0,0,0,0.15)'
                                         }} onClick={e => e.stopPropagation()}>
                                             <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: '#00173aff', marginBottom: '15px', width: '100%', borderRadius: '12px' }}>
                                                 <h2 style={{ padding: '15px', color: '#fff' }}>Novo Chamado</h2>
@@ -331,7 +356,26 @@ function Chamados() {
                                             <div className='modal-form' style={{ display: 'flex', flexDirection: 'row', gap: '10px', textAlign: 'left' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', minWidth: '300px', marginRight: '20px' }}>
                                                     <h4 style={{ textAlign: 'center', marginBottom: '5px', fontSize: '1.1rem' }}>Cliente</h4>
+
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <label>
+                                                            Data
+                                                        </label>
+
+                                                        <input
+                                                            className='input-modal-chamados'
+                                                            type='text'
+                                                            name="dataFormatada"
+                                                            value={newChamado.dataFormatada}
+                                                            onChange={handleChange}
+                                                            required
+                                                            disabled
+                                                        />
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+
                                                         <label>
                                                             Data e Hora da Abertura
                                                         </label>
@@ -339,7 +383,7 @@ function Chamados() {
                                                         <input
                                                             className='input-modal-chamados'
                                                             type='text'
-                                                            name="data_chamado"
+                                                            name="data_hora"
                                                             value={newChamado.data_hora}
                                                             onChange={handleChange}
                                                             required
@@ -358,7 +402,7 @@ function Chamados() {
                                                         <label>
                                                             Motivo do Chamado
                                                         </label>
-                                                        <textarea className='comment-solution' name="motivo" value={newChamado.motivo} onChange={handleChange} cols={20} rows={5} placeholder='Escreva o motivo do chamado do cliente aqui...' required />
+                                                        <textarea className='comment-solution' name="chamado" value={newChamado.chamado} onChange={handleChange} cols={20} rows={5} placeholder='Escreva o motivo do chamado do cliente aqui...' required />
 
                                                     </div>
                                                 </div>
@@ -441,50 +485,6 @@ function Chamados() {
                                     </form>
                                 )}
 
-                                <div className='dashboard-content-stats'>
-                                    <div className='dashboard-stats-card'>
-                                        <div className='dashboard-stats-title'>
-                                            <AddCommentIcon style={{ color: '#ff9100ff' }} />
-                                            <h1>Chamados em Aberto</h1>
-                                        </div>
-                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            {quantidadeChamadosNaTela}
-                                        </p>
-                                    </div>
-
-                                    <div className='dashboard-stats-card'>
-                                        <div className='dashboard-stats-title'>
-                                            <FactCheckIcon style={{ color: '#00b300' }} />
-                                            <h1>Chamados Resolvidos Hoje</h1>
-                                        </div>
-                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            {chamadosResolvidosHoje}
-                                        </p>
-                                    </div>
-
-                                    <div className='dashboard-stats-card'>
-                                        <div className='dashboard-stats-title'>
-                                            <AccessTimeIcon style={{ color: '#04204b' }} />
-                                            <h1>Tempo Médio de Resolução</h1>
-                                        </div>
-
-                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            1:30h
-                                        </p>
-                                    </div>
-
-                                    <div className='dashboard-stats-card'>
-                                        <div className='dashboard-stats-title'>
-                                            <SourceIcon style={{ color: '#008cffff' }} />
-                                            <h1>Total de Chamados</h1>
-                                        </div>
-
-                                        <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
-                                            {quantidadeChamadosTotal}
-                                        </p>
-                                    </div>
-                                </div>
-
                                 <div className='dashboard-header-chamados'>
 
                                     <div className='dashboard-header-search'>
@@ -550,7 +550,7 @@ function Chamados() {
                                     </div>
 
                                     {totalPages > 1 && (
-                                        <div className="table-pagination" style={{ display: 'flex', justifyContent: 'center'}}>
+                                        <div className="table-pagination" style={{ display: 'flex', justifyContent: 'center' }}>
                                             <button
                                                 onClick={() => setCurrentPage(1)}
                                                 disabled={currentPage === 1}
@@ -584,12 +584,12 @@ function Chamados() {
                                                 <th onClick={() => handleSort('data_chamado')} style={{ cursor: 'pointer' }}>Data</th>
                                                 <th onClick={() => handleSort('cliente')} style={{ cursor: 'pointer' }}>Nome do Cliente</th>
                                                 <th onClick={() => handleSort('contato')} style={{ cursor: 'pointer' }}>Contato</th>
-                                                <th onClick={() => handleSort('data_hora')} style={{ cursor: 'pointer' }}>Horário do Chamado</th>
+                                                <th onClick={() => handleSort('encerrado')} style={{ cursor: 'pointer' }}>Horário do Chamado</th>
                                                 <th onClick={() => handleSort('categoria')} style={{ cursor: 'pointer' }}>Categoria</th>
                                                 <th onClick={() => handleSort('chamado')} style={{ cursor: 'pointer' }}>Motivo do Chamado</th>
                                                 <th onClick={() => handleSort('solucao')} style={{ cursor: 'pointer' }}>Solução do Chamado</th>
                                                 <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>Status</th>
-                                                <th onClick={() => handleSort('encerrado')} style={{ cursor: 'pointer' }}>Horário Final</th>
+                                                <th onClick={() => handleSort('data_hora')} style={{ cursor: 'pointer' }}>Horário Final</th>
                                                 <th onClick={() => handleSort('tempo')} style={{ cursor: 'pointer' }}>Tempo decorrido</th>
                                                 <th onClick={() => handleSort('analista')} style={{ cursor: 'pointer' }}>Analista</th>
                                                 <th onClick={() => handleSort('nota')} style={{ cursor: 'pointer' }}>Nota</th>
@@ -607,18 +607,20 @@ function Chamados() {
                                                         onDoubleClick={() => handleRowDoubleClick(chamado)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td className='datetime' style={{ fontSize: '10px' }}>{formatDateOnly(chamado.data_chamado)}</td>
-                                                        <td className='column-name-chamado'>{formatAsciiText(chamado.cliente)}</td>
-                                                        <td className='column-name-chamado'>{formatAsciiText(chamado.contato)}</td>
+                                                        <td className='datetime' style={{ fontSize: '10px' }}>
+                                                            {formatDateHourMinute(chamado.data_chamado || newChamado.dataFormatada || '' )}
+                                                        </td>
+                                                        <td className='column-name-chamado'>{chamado.cliente}</td>
+                                                        <td className='column-name-chamado'>{chamado.contato}</td>
                                                         <td className='datetime' style={{ fontSize: '10px' }}>{formatDateHourMinute(chamado.data_hora)}</td>
-                                                        <td>{formatAsciiText(chamado.categoria)}</td>
-                                                        <td>{formatAsciiText(chamado.chamado)}</td>
-                                                        <td>{formatAsciiText(chamado.solucao)}</td>
-                                                        <td>{formatAsciiText(chamado.status)}</td>
+                                                        <td>{chamado.categoria}</td>
+                                                        <td>{chamado.chamado}</td>
+                                                        <td>{chamado.solucao}</td>
+                                                        <td>{chamado.status}</td>
                                                         <td className='datetime' style={{ fontSize: '10px' }}>{formatDateHourMinute(chamado.encerrado)}</td>
-                                                        <td>{formatAsciiText(chamado.tempo)}</td>
-                                                        <td>{formatAsciiText(chamado.analista)}</td>
-                                                        <td>{formatAsciiText(chamado.nota)}</td>
+                                                        <td>{chamado.tempo}</td>
+                                                        <td>{chamado.analista}</td>
+                                                        <td>{chamado.nota}</td>
                                                     </tr>
                                                 ))
                                             )}
