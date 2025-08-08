@@ -55,7 +55,7 @@ function Login() {
 
                 // Armazena os dados do usuário no localStorage
                 localStorage.setItem('user', JSON.stringify({
-                   token: data.token,
+                    token: data.token,
                 }));
 
                 setTimeout(() => {
@@ -86,8 +86,14 @@ function Login() {
 
             <div className="login-background">
                 <div className="login-container">
+                    
+                    <div className='header-login-form'>
+                        <div>
+                            <h1 className='login-title'>AutSuporte</h1>
+                        </div>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="login-form" action="/login" method="POST">
-                        <h1 className='login-title'>AutSuporte</h1>
 
                         <div className="box-login">
                             <label htmlFor="" className="label-email">
