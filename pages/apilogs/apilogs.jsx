@@ -159,7 +159,7 @@ function ApiLogs() {
     }
 
     useEffect(() => {
-        document.title = "AutSuporte - Logs API's";
+        document.title = "AutSuporte - Status API's";
 
         // Recupera os dados do usuário do localStorage
         const storedUser = localStorage.getItem('user');
@@ -236,7 +236,7 @@ function ApiLogs() {
 
                         <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                             <div className='dashboard-header'>
-                                <h1 className='dashboard-title'>Logs das API's</h1>
+                                <h1 className='dashboard-title'>Status das API's da GPI</h1>
                                 <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username}!,</font> esses são os dados das API's da GPI.</p>
                             </div>
 

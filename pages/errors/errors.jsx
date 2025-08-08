@@ -86,7 +86,7 @@ const Errors = () => {
     }
 
     useEffect(() => {
-        document.title = "AutSuporte - Logs de Erros";
+        document.title = "AutSuporte - Logs das API's";
 
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -152,8 +152,8 @@ const Errors = () => {
 
                 <div className={`dashboard-container${isMenuOpen ? ' menu-open' : ''}`}>
                     <div className='dashboard-header'>
-                        <h1 className='dashboard-title'>Logs de Erros</h1>
-                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são os dados de log de erros dos clientes.</p>
+                        <h1 className='dashboard-title'>Logs das API's</h1>
+                        <p className='dashboard-subtitle'>Olá <font color='#0356bb'>{payload.username},</font> esses são os dados de log das api's dos clientes.</p>
                     </div>
 
                     <div className='dashboard-content-container-errors'>
