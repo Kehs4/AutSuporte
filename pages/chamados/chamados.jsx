@@ -399,6 +399,39 @@ function Chamados() {
                                                     </div>
 
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <label>
+                                                            Contato
+                                                        </label>
+                                                        <input className='input-modal-chamados' type="text" name="contato" value="{newChamado.contato}" onChange={handleChange} placeholder='Contato' required />
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <label>
+                                                            Categoria
+                                                        </label>
+                                                        <select className='input-modal-chamados' type="text" name="categoria" value="{newChamado.categoria}" onChange={handleChange} required>
+                                                            <option value=""></option>
+                                                            <option value="AUT">Autenticação/Atualização</option>
+                                                            <option value="BD">Banco de Dados</option>
+                                                            <option value="CFG">Configuração</option>
+                                                            <option value="FS">Falhas Sistêmicas</option>
+                                                            <option value="INF">Infra</option>
+                                                            <option value="INS">Instalações</option>
+                                                            <option value="ITF">Interfaces/Integrações</option>
+                                                            <option value="LA">Liberar Acessos</option>
+                                                            <option value="NF">Notas Fiscais</option>
+                                                            <option value="OP">Operacionais/Orientações</option>
+                                                            <option value="POR">Portais</option>
+                                                            <option value="PUB">Publicadores</option>
+                                                            <option value="CAD">Cadastros</option>
+                                                            <option value="HOM">Testes/Homologação</option>
+                                                            <option value="TRE">Treinamento</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                         <label>
                                                             Motivo do Chamado
                                                         </label>
@@ -437,12 +470,32 @@ function Chamados() {
 
                                                     </div>
 
+                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <label>
+                                                            Status
+                                                        </label>
+                                                        <select className='input-modal-chamados' type="text" name="status" value="{newChamado.status}" onChange={handleChange} required>
+                                                            <option value=""></option>
+                                                            <option value="FIN">Finalizado</option>
+                                                            <option value="PEN">Pendente</option>
+                                                        </select>   
+                                                    </div>
+
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
 
                                                         <label>
                                                             Analista
                                                         </label>
                                                         <input className='input-modal-chamados' type="text" name="analista" value={newChamado.analista} onChange={handleChange} placeholder='Nome do Analista' required />
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+                                                        <label>
+                                                            Nota
+                                                        </label>
+                                                        <input className='input-modal-chamados' type="text" name="nota" value="{newChamado.nota}" onChange={handleChange} placeholder='Nota' required />
                                                     </div>
                                                 </div>
 
