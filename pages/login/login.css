@@ -208,15 +208,23 @@
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    animation: zoomIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .modal-icon-success {
     font-size: 3rem;
     margin-bottom: 10px;
+    animation: pulse 1s infinite;
 }
 
 .modal-checkmark {
     color: #0356bb;
+}
+
+.modal-checkmark svg path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: drawCheck 0.6s ease forwards;
 }
 
 .modal-title-success {
@@ -232,4 +240,39 @@
     font-size: 1rem;
     margin-bottom: 20px;
     color: #333;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    color: #0356bb;
+  }
+  50% {
+    transform: scale(1.15);
+    color: #00b300;
+  }
+  100% {
+    transform: scale(1);
+    color: #0356bb;
+  }
+}
+
+@keyframes drawCheck {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }

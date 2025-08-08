@@ -5,7 +5,7 @@
     max-width: 280px;
     overflow: hidden;
     transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    background: linear-gradient(180deg, #ffffff 80%, #04204b 110%);
+    background: linear-gradient(180deg, #ffffff 80%, #ff7300 100%);
     box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
     border-right: 1px solid #ccc;
     position: relative;
@@ -33,7 +33,7 @@
     cursor: pointer;
     margin-right: 30px;
     padding: 3px 10px;
-    background-color: #04204b;
+    background-color: var(--header-color);
     color: rgb(255, 255, 255);
   }
   

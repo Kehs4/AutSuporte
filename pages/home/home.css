@@ -11,7 +11,7 @@
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #030114, #01020a);
+    background: linear-gradient(to bottom, #111111, #111111);
 }
 
 .home-container {
@@ -104,8 +104,8 @@
     background: repeating-linear-gradient(0deg,
             transparent 0,
             transparent 20px,
-            #01020a 20px,
-            #01020a 40px);
+            #111111 20px,
+            #111111 40px);
     color: #b87e27;
     font-size: 3rem;
     font-weight: bold;

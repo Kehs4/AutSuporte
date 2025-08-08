@@ -16,7 +16,7 @@ a {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgb(255, 255, 255);
-    background-color: #04204b;
+    background-color: var(--header-color);
     height: 70px;
     color: white;
   }
@@ -37,22 +37,23 @@ a {
   .autsuporte-header-options {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
     gap: 25px;
     color: white;
     margin-right: 20px;
     font-size: 14px;
-    background-color: #04204b;
+    width: 140px;
+    background-color: var(--header-color);
     padding: 8px 12px;
     border-radius: 8px;
     transition: background-color 0.3s ease;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.719);
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.719);
   }
   
   .autsuporte-header-options:hover {
     cursor: pointer;
-    background-color: #043580;
+    background-color: var(--primary-color);
     transition: background-color 0.3s ease;
   }
 
