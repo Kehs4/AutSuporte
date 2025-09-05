@@ -46,8 +46,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background: linear-gradient(90deg, #2e2e2e6c 0% , #ff8800 50%, #2e2e2e6c 100%),
-                linear-gradient(210deg, #004586 30% , #ff0000e1 50%, #ff008c 100%);
+    background-color: var(--primary-color);
     border-radius: 5px;
     padding: 20px;
     box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.651);

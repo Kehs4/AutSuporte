@@ -55,7 +55,13 @@ function Chamados() {
             cliente: '',
             chamado: '',
             solucao: '',
-            encerrado: ''
+            encerrado: '',
+            contato: '',
+            categoria: '',
+            status: '',
+            tempo: '',
+            analista: '',
+            nota: ''
         });
     }
 
@@ -240,10 +246,14 @@ function Chamados() {
             dataFormatada: formatDateHourMinute(chamado.data_chamado || newChamado.dataFormatada || ''),
             data_hora: formatDateHourMinute(chamado.data_hora || ''),
             cliente: chamado.cliente || '',
+            contato: chamado.contato || '',
+            categoria: chamado.categoria || '',
             chamado: chamado.chamado || '',
             solucao: chamado.solucao || '',
             encerrado: chamado.encerrado || '',
-            analista: chamado.analista || ''
+            status: chamado.status || '',
+            analista: chamado.analista || '',
+            nota: chamado.nota || ''
         });
         setModalOpen(true);
     }
@@ -403,7 +413,7 @@ function Chamados() {
                                                         <label>
                                                             Contato
                                                         </label>
-                                                        <input className='input-modal-chamados' type="text" name="contato" value="{newChamado.contato}" onChange={handleChange} placeholder='Contato' required />
+                                                        <input className='input-modal-chamados' type="text" name="contato" value={newChamado.contato} onChange={handleChange} placeholder='Contato' required />
                                                     </div>
 
                                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -411,7 +421,7 @@ function Chamados() {
                                                         <label>
                                                             Categoria
                                                         </label>
-                                                        <select className='input-modal-chamados' type="text" name="categoria" value="{newChamado.categoria}" onChange={handleChange} required>
+                                                        <select className='input-modal-chamados' type="text" name="categoria" value={newChamado.categoria} onChange={handleChange} required>
                                                             <option value=""></option>
                                                             <option value="AUT">Autenticação/Atualização</option>
                                                             <option value="BD">Banco de Dados</option>
@@ -475,7 +485,7 @@ function Chamados() {
                                                         <label>
                                                             Status
                                                         </label>
-                                                        <select className='input-modal-chamados' type="text" name="status" value="{newChamado.status}" onChange={handleChange} required>
+                                                        <select className='input-modal-chamados' type="text" name="status" value={newChamado.status} onChange={handleChange} required>
                                                             <option value=""></option>
                                                             <option value="FIN">Finalizado</option>
                                                             <option value="PEN">Pendente</option>
@@ -495,7 +505,7 @@ function Chamados() {
                                                         <label>
                                                             Nota
                                                         </label>
-                                                        <input className='input-modal-chamados' type="text" name="nota" value="{newChamado.nota}" onChange={handleChange} placeholder='Nota' required />
+                                                        <input className='input-modal-chamados' type="text" name="nota" value={newChamado.nota} onChange={handleChange} placeholder='Nota' required />
                                                     </div>
                                                 </div>
 
