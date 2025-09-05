@@ -127,8 +127,11 @@ const Errors = () => {
 
     const totalErrors = filteredErrors.length;
     const totalErrorsDB = filteredErrors.reduce((total, error) => total + (Number(error.errorDB) || 0), 0);
-    const totalErrorsAPI = filteredErrors.reduce((total, error) => total + (Number(error.errorAPI) || 0), 0);
-
+    const totalErrorsAPI = filteredErrors.filter(error => {
+    const code = Number(error.status_code);
+    return !(code >= 200 && code < 300);
+    }).length;
+    
     return (
         <>
             <div className='autsuporte-container-dashboard'>
@@ -237,7 +240,7 @@ const Errors = () => {
                                 <div className='dashboard-stats-card'>
                                     <div className='dashboard-stats-title'>
                                         <GppMaybeIcon style={{ color: 'red' }}></GppMaybeIcon>
-                                        <h1>Total de Erros</h1>
+                                        <h1>Total de Requests das Integrações</h1>
                                     </div>
                                     <p style={{ fontSize: "1.6rem", fontWeight: "bold", color: "#000000" }}>
                                         {totalErrors}
